@@ -1,0 +1,84 @@
+plugin.tx_t3sixshop {
+	view {
+		templateRootPath = {$plugin.tx_t3sixshop.view.templateRootPath}
+		partialRootPath = {$plugin.tx_t3sixshop.view.partialRootPath}
+		layoutRootPath = {$plugin.tx_t3sixshop.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_t3sixshop.persistence.storagePid}
+	}
+	settings {
+		singlePid = {$plugin.tx_t3sixshop.settings.singlePid}
+		category = {$plugin.tx_t3sixshop.settings.category}
+		listPid = {$plugin.tx_t3sixshop.settings.listPid}
+		cartPid = {$plugin.tx_t3sixshop.settings.cartPid}
+		lazyLoad = {$plugin.tx_t3sixshop.settings.lazyLoad}
+		jScroll = {$plugin.tx_t3sixshop.settings.jScroll}
+		jScrollPid = {$plugin.tx_t3sixshop.settings.jScrollPid}
+		currency = {$plugin.tx_t3sixshop.settings.currency}
+		orderPrefix = {$plugin.tx_t3sixshop.settings.orderPrefix}
+		orderEmail = {$plugin.tx_t3sixshop.settings.orderEmail}
+		orderEmailName = {$plugin.tx_t3sixshop.settings.orderEmailName}
+		senderEmail = {$plugin.tx_t3sixshop.settings.senderEmail}
+		senderEmailName = {$plugin.tx_t3sixshop.settings.senderEmailName}
+		minOrderAmt = {$plugin.tx_t3sixshop.settings.minOrderAmt}
+		registerPid = {$plugin.tx_t3sixshop.settings.registerPid}
+		list {
+			perpage = {$plugin.tx_t3sixshop.settings.list.perpage}
+			width = {$plugin.tx_t3sixshop.settings.list.width}
+			height = {$plugin.tx_t3sixshop.settings.list.height}
+			crop = {$plugin.tx_t3sixshop.settings.list.crop}
+		}
+		detail {
+			width = {$plugin.tx_t3sixshop.settings.detail.width}
+			height = {$plugin.tx_t3sixshop.settings.detail.height}
+			zoom = {$plugin.tx_t3sixshop.settings.detail.zoom}
+			thumbwidth = {$plugin.tx_t3sixshop.settings.detail.thumbwidth}
+			thumbheight = {$plugin.tx_t3sixshop.settings.detail.thumbheight}
+		}
+		feature = {$plugin.tx_t3sixshop.settings.feature}
+		feature_limit =  {$plugin.tx_t3sixshop.settings.feature_limit}
+	}
+	features {
+		# uncomment the following line to enable the new Property Mapper.
+		# rewrittenPropertyMapper = 1
+	}
+}
+
+# CSS and JS inclusion
+page.includeCSS {
+	tx_t3sixshop_css1 = {$plugin.tx_t3sixshop.view.mainCss}
+	tx_t3sixshop_css2 = {$plugin.tx_t3sixshop.view.zoomCss}
+}
+
+page.includeJS {
+	tx_t3sixshop_file1 = {$plugin.tx_t3sixshop.view.lazyJs}
+	tx_t3sixshop_file2 = {$plugin.tx_t3sixshop.view.scrollJs}
+	tx_t3sixshop_file3 = {$plugin.tx_t3sixshop.view.zoomJs}
+	tx_t3sixshop_file4 = {$plugin.tx_t3sixshop.view.validJs}
+}
+
+plugin.tx_t3sixshop._CSS_DEFAULT_STYLE (
+	textarea.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	input.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	.tx-t3sixshop table {
+		border-collapse:separate;
+		border-spacing:10px;
+	}
+
+	.tx-t3sixshop table th {
+		font-weight:bold;
+	}
+
+	.tx-t3sixshop table td {
+		vertical-align:top;
+	}
+)

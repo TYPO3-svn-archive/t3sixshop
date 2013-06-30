@@ -1,0 +1,51 @@
+{namespace arm=Arm\T3sixshop\ViewHelpers}
+<f:layout name="Default" />
+<f:section name="main">
+	<f:if condition="{products}">
+		<f:if condition="{settings.feature}">
+			<f:then>
+				<div class="grid-view featured">
+					<ul class="clearfix product-list">
+						<f:for each="{products}" as="product">
+							<li class="item clearfix"><f:render partial="Product/List" arguments="{product:product, settings:settings}" /></li>
+						</f:for>
+					</ul>
+					<div class="more"><f:link.page pageUid="{settings.listPid}" title="{f:translate->key('tx_t3sixshop_domain_model_product.more')}"><f:translate key="tx_t3sixshop_domain_model_product.more" /></f:link.page></div>
+				</div>
+			</f:then>
+			<f:else>		
+				<div id="toogle-view">
+					<label>View: </label>
+					<div class="view-icons active"><img src="typo3conf/ext/t3sixshop/Resources/Public/Images/grid_view.gif" alt="Grid view" /></div>
+					<div class="view-icons"><img src="typo3conf/ext/t3sixshop/Resources/Public/Images/list_view.gif" alt="Grid view" /></div>
+				</div>
+				<div class="grid-view">
+					<f:if condition="{0:settings.jScroll} == {0:'1'}">
+						<f:then>
+						<!-- jScroll display -->
+						   <div class="clearfix product-list">
+						   		<div class="infinite-scroll">
+									<arm:widget.jscroll objects="{products}" as="paginatedProduct" jScrollPid="{settings.jScrollPid}" itemScroll="{settings.list.perpage}">
+										<f:for each="{paginatedProduct}" as="product">
+											<div class="item clearfix"><f:render partial="Product/List" arguments="{product:product, settings:settings}" /></div>
+										</f:for>
+									</arm:widget.jscroll>
+								</div>
+							</div>
+						</f:then>
+						<f:else>
+						<!-- normal pagination -->
+							<f:widget.paginate objects="{products}" as="paginatedProduct" configuration="{itemsPerPage: settings.list.perpage, insertAbove: 0, insertBelow: 1}">
+								<ul class="clearfix product-list">
+									<f:for each="{paginatedProduct}" as="product">
+										<li class="item clearfix"><f:render partial="Product/List" arguments="{product:product, settings:settings}" /></li>
+									</f:for>
+								</ul>
+							</f:widget.paginate>
+						</f:else>
+					</f:if>
+				</div>
+			</f:else>
+		</f:if>
+	</f:if>
+</f:section>

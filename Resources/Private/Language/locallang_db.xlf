@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-14T23:46:34Z" product-name="t3sixshop">
+		<header/>
+		<body>
+
+			<trans-unit id="tx_t3sixshop_domain_model_category">
+				<source>Category</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_category.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_category.products">
+				<source>Products</source>
+			</trans-unit>
+			
+			<trans-unit id="tx_t3sixshop_domain_model_manufacturer">
+				<source>Nanufacturer</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_manufacturer.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_manufacturer.products">
+				<source>Products</source>
+			</trans-unit>
+			
+			<trans-unit id="tx_t3sixshop_domain_model_pgroup">
+				<source>Price Group</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_pgroup.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_pgroup.price">
+				<source>Price</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_pgroup.products">
+				<source>Products</source>
+			</trans-unit>
+			
+
+			<trans-unit id="tx_t3sixshop_domain_model_product">
+				<source>Product</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.tab.more" xml:space="preserve">
+				<source>More information</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.category">
+				<source>Category</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.manufacturer">
+				<source>Manufacturer</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.pgroup">
+				<source>Price group</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.category.0" xml:space="preserve">
+				<source> -- select -- </source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.manufacturer.0" xml:space="preserve">
+				<source> -- select -- </source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.pgroup.0" xml:space="preserve">
+				<source> -- select -- </source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.unit">
+				<source>Unit</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.discount">
+				<source>Discount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.price">
+				<source>Price</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.image">
+				<source>Image</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.instock">
+				<source>Instock</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.featured">
+				<source>Featured</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.minorder">
+				<source>Min. order qty</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.related">
+				<source>Related products</source>
+			</trans-unit>
+
+			<trans-unit id="tx_t3sixshop_domain_model_order">
+				<source>Order</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.tab.customer" xml:space="preserve">
+				<source>Customer</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.user">
+				<source>Customer</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.crdate">
+				<source>Order date</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.session">
+				<source>Session</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.email">
+				<source>Email</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.fname">
+				<source>First name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.lname">
+				<source>Last name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.phone">
+				<source>Phone</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.apartment">
+				<source>Apartment</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.address">
+				<source>Address</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.zip">
+				<source>Zip</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.amount">
+				<source>Net Amount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.totalamount">
+				<source>Grand Total</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.status">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.remark">
+				<source>Remark</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.discount">
+				<source>Discount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.deliveryon">
+				<source>Deliveryon</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.orderid">
+				<source>Orderid</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.orderitems">
+				<source>Orderitems</source>
+			</trans-unit>
+
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem">
+				<source>Orderitem</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.qty">
+				<source>Qty</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.newqty">
+				<source>New quantity</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.rate">
+				<source>Rate</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.amount">
+				<source>Amount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.newamount">
+				<source>New amount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.product">
+				<source>Product</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.status">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.remark">
+				<source>Remark</source>
+			</trans-unit>
+
+			<trans-unit id="tx_t3sixshop_domain_model_customer">
+				<source>Customer</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_customer.voucher">
+				<source>Voucher</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_customer.orders">
+				<source>Orders</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_customer.apartment">
+				<source>Apartment</source>
+			</trans-unit>
+			
+			<trans-unit id="fe_users.tx_extbase_type.Tx_T3sixshop_Customer">
+				<source>T3 Shop for V6 Customer</source>
+			</trans-unit>
+			
+			<trans-unit id="tx_t3sixshop_flexform.singlePid">
+				<source>Details page</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_flexform.list.perpage">
+				<source>Records per page</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_flexform.feature">
+				<source>Feature products</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_flexform.feature.limit">
+				<source>No. of featured products</source>
+			</trans-unit>
+			
+		</body>
+	</file>
+</xliff>

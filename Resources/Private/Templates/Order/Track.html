@@ -1,0 +1,18 @@
+<f:layout name="Default" />
+<f:section name="main">
+<h1>Track order status</h1>
+<div class="alert">
+	<f:flashMessages />
+</div>
+<div id="track-order">
+	<f:if condition="{order}">
+		<p><f:translate key="tx_t3sixshop_domain_model_order.lbl_status" /> <strong><f:translate key="tx_t3sixshop_domain_model_order.status.{order.status}" /></strong></p>
+	</f:if>
+	<f:form name="track"  method="post" action="track">
+		<dl>
+			<dt><label><f:translate key="tx_t3sixshop_domain_model_order.enter_orderid" />&nbsp;</label><f:form.textfield name="orderid" /></dt> 
+			<dd><f:form.submit name="checkoutBtn" value="{f:translate(key:'tx_t3sixshop_domain_model_order.btn_sub')}" class="button" /></dd>
+		</dl>
+	</f:form>
+</div>
+</f:section>

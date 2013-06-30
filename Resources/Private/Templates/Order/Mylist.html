@@ -1,0 +1,107 @@
+<f:layout name="Default" />
+<f:section name="main">
+<h1>My Orders</h1>
+
+<div class="alert">
+	<f:flashMessages />
+</div>
+<f:if condition="{orders}">
+	<f:then>
+		<f:widget.paginate objects="{orders}" as="paginatedOrders" configuration="{itemsPerPage: settings.list.perpage, insertAbove: 0, insertBelow: 1}">
+		<f:for each="{paginatedOrders}" as="order" iteration="row">
+			<table class="tx_t3sixshop_orders upper dark-green" >
+				<tr>
+					<td class="colsrno"># {row.cycle}</td>
+					<td class="colprd">{order.orderid}</td>
+					<td class="colprd right"><f:translate key="tx_t3sixshop_domain_model_order.crdate" />: <f:format.date format="d/m/Y H:i">{order.crdate}</f:format.date></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><f:translate key="tx_t3sixshop_domain_model_order.amount" />: {settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{order.amount}</f:format.number></td>
+					<td class="right"><f:translate key="tx_t3sixshop_domain_model_order.status" />: <f:translate key="tx_t3sixshop_domain_model_order.status.{order.status}" /></td>
+				</tr>
+				<f:if condition="{0:order.discount} > {0:0}">
+					<tr>
+						<td>&nbsp;</td>
+						<td><f:translate key="tx_t3sixshop_domain_model_order.orgamount" />: {settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{order.totalamount}</f:format.number></td>
+						<td class="right"><f:translate key="tx_t3sixshop_domain_model_order.discount" />: {settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{order.discount}</f:format.number></td>
+					</tr>
+				</f:if>
+				<f:if condition="{order.remark}">
+					<tr>
+						<td>&nbsp;</td>
+						<td><f:translate key="tx_t3sixshop_domain_model_order.remark" />: {order.remark}</td>
+						<td class="right"></td>
+					</tr>
+				</f:if>
+				<tr class="green">
+					<td colspan="3"><f:translate key="tx_t3sixshop_domain_model_order.items" /></td>
+				</tr>
+				<tr class="light-gray">
+					<td colspan="3">
+						<table class="tx_t3sixshop_orders" >
+							<tr class="order-header">
+								<td class="colsrno">&nbsp;</td>
+								<td class="colitemprd"><f:translate key="tx_t3sixshop_domain_model_orderitem.product" /></td>
+								<td class="colrate right"><f:translate key="tx_t3sixshop_domain_model_orderitem.rate" /></td>
+								<td class="colqty right"><f:translate key="tx_t3sixshop_domain_model_orderitem.qty" /></td>
+								<td class="colamt right"><f:translate key="tx_t3sixshop_domain_model_orderitem.amount" /></td>
+								<td><f:translate key="tx_t3sixshop_domain_model_orderitem.status" /></td>
+								<td><f:translate key="tx_t3sixshop_domain_model_orderitem.remark" /></td>
+							</tr>
+							<f:for each="{order.orderitems}" as="item" iteration="rowitem">
+								<tr>
+									<td class="right">{rowitem.cycle}.</td>
+									<td>{item.product.name}</td>
+									<td class="right">{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{item.rate}</f:format.number></td>
+									<td class="right">
+										<f:if condition="{0:item.qty} != {0:item.newqty}">
+											<f:then>
+												<f:if condition="{0:item.status} > {0:0}">
+													<f:then>
+														<span class="strike">{item.qty} {item.product.unit}</span><br /><strong>{item.newqty} {item.product.unit}</strong>
+													</f:then>
+													<f:else>
+														{item.qty} {item.product.unit}
+													</f:else>
+												</f:if>
+											</f:then>
+											<f:else>
+												{item.qty} {item.product.unit}
+											</f:else>
+										</f:if>
+									</td>
+									<td class="right">
+										<f:if condition="{0:item.amount} != {0:item.newamount}">
+											<f:then>
+												<f:if condition="{0:item.status} > {0:0}">
+													<f:then>
+														<span class="strike">{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{item.amount}</f:format.number></span><br /><strong>{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{item.newamount}</f:format.number></strong>
+													</f:then>
+													<f:else>
+														{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{item.amount}</f:format.number>
+													</f:else>
+												</f:if>
+											</f:then>
+											<f:else>
+												{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{item.amount}</f:format.number>
+											</f:else>
+										</f:if>
+									</td>
+									<td><f:translate key="tx_t3sixshop_domain_model_orderitem.status.{item.status}" /></td>
+									<td>{item.remark}</td>
+								</tr>
+							</f:for>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<br /><br />
+		</f:for>
+		</f:widget.paginate>
+	</f:then>
+	<f:else>
+		<div class="notice"><f:translate key="tx_t3sixshop_domain_model_order.nilorder" /></div>
+	</f:else>
+</f:if>
+</f:section>

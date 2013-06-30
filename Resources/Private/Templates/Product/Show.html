@@ -1,0 +1,48 @@
+<f:layout name="Default" />
+<f:section name="main">
+<div id="product-main">
+	<div id="left-pblock">
+		<f:if condition="{settings.detail.zoom}">
+			<f:then>
+				<f:render partial="Product/Detail" arguments="{product:product, settings:settings}" />
+			</f:then>
+			<f:else>
+				<div id="prd-img-main">
+					<f:image src="{product.image.uid}"  width="{settings.detail.width}c" height="{settings.detail.height}c" treatIdAsReference="1"  alt="{product.name}" />
+				</div>
+			</f:else>
+		</f:if>
+	</div>
+	<div id="right-pblock" class="clearfix">
+		<div id="prd-details">
+			<h1>{product.name}</h1>
+			<div id="prd-desc">{product.description}</div>
+			<div id="prd-price" class="price"><label><f:translate key="tx_t3sixshop_domain_model_product.price" /></label>:  &nbsp;{settings.currency} 
+				<f:if condition="{0:product.price}=={0:product.currentprice}">
+					<f:then>
+						<f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{product.price}</f:format.number> 
+					</f:then>
+					<f:else>
+						<span class="strike"><f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{product.price}</f:format.number></span> <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{product.currentprice}</f:format.number> 
+					</f:else>
+				</f:if> / {product.unit}
+			</div>
+			<div id="prd-order">
+			<f:if condition="{0:product.instock} == {0:1}">
+				<f:then>
+					<f:form name="product" id="orderFrm" pageUid="{settings.cartPid}" method="post" pluginName="Basket" controller="Order" action="update" object="{product}">
+						<label><f:translate key="tx_t3sixshop_domain_model_product.qty" />: </label> <f:form.textfield name="quantity" id="quantity" value="{qty}" class="requiredMinorder" /><br />
+						<div id="orderbtn"><f:form.submit name="orderBtn" value="{f:translate(key:'tx_t3sixshop_domain_model_product.btn_buy')}" class="button" /></div>
+						<f:form.hidden name="minorder" id="minorder" value="{product.minorder}" />
+					</f:form>
+				</f:then>
+					<f:else>
+						<f:translate key="tx_t3sixshop_domain_model_product.outofstock" />
+					</f:else>
+				</f:if>
+			</div>
+		</div>
+	</div>
+</div>
+
+</f:section>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-14T23:46:34Z" product-name="t3sixshop">
+		<header/>
+		<body>
+
+			<trans-unit id="tx_t3sixshop_domain_model_category">
+				<source>Shop category</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_category.name">
+				<source>name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_category.products">
+				<source>products</source>
+			</trans-unit>
+			
+			<trans-unit id="tx_t3sixshop_domain_model_product">
+				<source>Shop product</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.product">
+				<source>Product</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.name">
+				<source>name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.description">
+				<source>description</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.discount">
+				<source>discount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.price">
+				<source>price</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.image">
+				<source>image</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.instock">
+				<source>In stock</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.outofstock">
+				<source>Out of stock</source>
+			</trans-unit>
+			
+			<trans-unit id="tx_t3sixshop_domain_model_product.btn_buy">
+				<source>Order</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.qty">
+				<source>Quantity</source>
+			</trans-unit>
+			
+			
+			<trans-unit id="tx_t3sixshop_domain_model_product.more">
+				<source>more....</source>
+			</trans-unit>
+			
+			<trans-unit id="tx_t3sixshop_domain_model_order">
+				<source>Product variants</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.user">
+				<source>user</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.fname">
+				<source>First name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.lname">
+				<source>Last name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.email">
+				<source>E-Mail</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.phone">
+				<source>Phone</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.apartment">
+				<source>Apartment name (if any)</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.address">
+				<source>Address</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.zip">
+				<source>Pincode</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.amount">
+				<source>Amount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.orgamount">
+				<source>Orig. Amount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.status">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.remark">
+				<source>Remark</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.discount">
+				<source>Discount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.deliveryon">
+				<source>Delivery date</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.orderid">
+				<source>Order ID</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.orderitems">
+				<source>Order items</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.noorder">
+				<source>No product in your basket!</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.total">
+				<source>TOTAL</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.checkout">
+				<source>Checkout</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.continueshop">
+				<source>Continue shopping</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.startshop">
+				<source>Start shopping</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.checkout_btn">
+				<source>Confirm</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.cart">
+				<source>Basket</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.createlogin">
+				<source>Create my login details</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.minorder">
+				<source>To place order, amount should be greater or equal to </source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.noitem">
+				<source>Your basket is empty!</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.session_expired">
+				<source>Sorry! Your session has expired because of no activity.</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.enter_orderid">
+				<source>Enter Order ID:</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.btn_sub">
+				<source>Submit</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.invalid_orderid">
+				<source>Invalid Order ID! Please check and retry with correct Order ID.</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.lbl_status">
+				<source>The status of the order is: </source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.status.0">
+				<source>Ignored</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.status.1">
+				<source>Pending</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.status.2">
+				<source>Processing</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.status.3">
+				<source>Shipped</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.status.4">
+				<source>Delivered</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.status.5">
+				<source>Returned</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.status.6">
+				<source>Cancelled</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.nilorder">
+				<source>Sorry! You have not placed any order till date. Please start ordering.</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.items">
+				<source>Item list</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.crdate">
+				<source>Date</source>
+			</trans-unit>
+			
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem">
+				<source>Order Items</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.srno">
+				<source>Sr. no.</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.qty">
+				<source>Qty</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.newqty">
+				<source>New qty.</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.remark">
+				<source>Remark</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.status">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.rate">
+				<source>Rate</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.amount">
+				<source>Amount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.newamount">
+				<source>New Amount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.product">
+				<source>Product</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.product_added">
+				<source>Product added to basket.</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.product_remove">
+				<source>Product removed from basket!</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.product_updated">
+				<source>Product quantity updated.</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.same_product_qty">
+				<source>Product with same quantity already present!</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.edit">
+				<source>Edit</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.delete">
+				<source>Remove</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.status.0">
+				<source>Normal</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.status.1">
+				<source>Returned</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.status.2">
+				<source>Qty change</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.status.3">
+				<source>Cancelled</source>
+			</trans-unit>
+			
+			<trans-unit id="tx_t3sixshop_domain_model_customer">
+				<source>Customer</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_customer.existing">
+				<source>Existing customers, please enter your login details:</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_customer.username">
+				<source>E-Mail</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_customer.password">
+				<source>Password</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_customer.voucher">
+				<source>Voucher</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_customer.orders">
+				<source>Orders</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_customer.login_btn">
+				<source>Login</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_customer.login_failed">
+				<source>Login process failed! Please enter valid username and password.</source>
+			</trans-unit>
+			
+		</body>
+	</file>
+</xliff>

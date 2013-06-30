@@ -1,0 +1,22 @@
+{namespace arm=Arm\T3sixshop\ViewHelpers}
+<f:layout name="Default" />
+<f:section name="main">
+	<f:if condition="{products}">	
+		<div class="grid-view">
+			<div class="line order-header">
+				<div class="sr">#</div>
+				<div class="item"><f:translate key="tx_t3sixshop_domain_model_product.product" /></div>
+				<div class="rate">{settings.currency}</div>
+				<div class="clear"></div>
+			</div>
+			<f:for each="{products}" as="product" iteration="row">
+				<div class="line">
+					<div class="sr">{row.cycle}.</div>
+					<div class="item">{product.name}</div>
+					<div class="rate"><f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{product.currentprice}</f:format.number>/{product.unit}</div>
+					<div class="clear"></div>
+				</div>
+			</f:for>
+		</div>
+	</f:if>
+</f:section>

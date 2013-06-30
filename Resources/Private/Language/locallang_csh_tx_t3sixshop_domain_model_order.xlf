@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-14T23:46:34Z" product-name="t3sixshop">
+		<header/>
+		<body>
+
+			<trans-unit id="user.description">
+				<source>user</source>
+			</trans-unit>
+			<trans-unit id="email.description">
+				<source>email</source>
+			</trans-unit>
+			<trans-unit id="phone.description">
+				<source>phone</source>
+			</trans-unit>
+			<trans-unit id="apartment.description">
+				<source>apartment</source>
+			</trans-unit>
+			<trans-unit id="address.description">
+				<source>address</source>
+			</trans-unit>
+			<trans-unit id="zip.description">
+				<source>zip</source>
+			</trans-unit>
+			<trans-unit id="amount.description">
+				<source>amount</source>
+			</trans-unit>
+			<trans-unit id="status.description">
+				<source>status</source>
+			</trans-unit>
+			<trans-unit id="discount.description">
+				<source>discount</source>
+			</trans-unit>
+			<trans-unit id="deliveryon.description">
+				<source>deliveryon</source>
+			</trans-unit>
+			<trans-unit id="orderid.description">
+				<source>orderid</source>
+			</trans-unit>
+			<trans-unit id="orderitems.description">
+				<source>orderitems</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,30 @@
+<div class="wrapper">
+	<div class="prd-img"><f:link.action action="show" pluginName="Show" pageUid="{settings.singlePid}" arguments="{product : product}"><f:image src="{product.image.uid}" alt="{product.name}" width="{settings.list.width}c" height="{settings.list.height}c" treatIdAsReference="1" /></f:link.action></div>
+	<dl class="def-list-1">
+		<dt><f:link.action action="show" pluginName="Show" pageUid="{settings.singlePid}" arguments="{product : product}" title="{product.name}">{product.name}</f:link.action></dt>
+		<dd>
+			<f:format.crop maxCharacters="{settings.list.crop}" append="&nbsp;[...]">{product.description}</f:format.crop>
+		</dd>
+	</dl>
+	<div class="price-block">
+		<div class="price"><!-- <label><f:translate key="tx_t3sixshop_domain_model_product.price" /></label>:  -->{settings.currency} 
+		<f:if condition="{0:product.price}=={0:product.currentprice}">
+			<f:then>
+				<f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{product.price}</f:format.number> 
+			</f:then>
+			<f:else>
+				<span class="strike"><f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{product.price}</f:format.number></span> <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{product.currentprice}</f:format.number> 
+			</f:else>
+		</f:if> / {product.unit}</div>
+		<div class="buy">
+			<f:if condition="{0:product.instock} == {0:1}">
+				<f:then>
+					<f:link.action pluginName="Show" action="show" pageUid="{settings.singlePid}" arguments="{product : product}" title="{product.name}" class="button"><f:translate key="tx_t3sixshop_domain_model_product.btn_buy" /></f:link.action>
+				</f:then>
+					<f:else>
+						<f:translate key="tx_t3sixshop_domain_model_product.outofstock" />
+					</f:else>
+				</f:if>
+		</div>
+	</div>
+</div>

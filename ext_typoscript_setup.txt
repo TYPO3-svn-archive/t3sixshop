@@ -1,0 +1,33 @@
+config.tx_extbase{
+    persistence{
+        classes{
+            Arm\T3sixshop\Domain\Model\Customer {
+                mapping {
+                    tableName = fe_users
+                    recordType = Tx_Extbase_Domain_Model_FrontendUser
+                }
+            }
+            Arm\T3sixshop\Domain\Model\Order {
+                mapping {
+                    tableName = tx_t3sixshop_domain_model_order
+                    columns {
+						crdate.mapOnProperty = crdate
+					}
+                }
+            }
+    	}
+    }
+}
+
+ajaxPage = PAGE
+ajaxPage {
+	typeNum = 99
+	config {
+		disableAllHeaderCode = 1
+		# additionalHeaders = Content-type: text/plain
+		xhtml_cleaning = 0
+		admPanel = 0
+		no_cache = 1
+	}
+	lib.content_main < tt_content.list.20.t3sixshop_list	
+}

@@ -1,0 +1,85 @@
+plugin.tx_t3sixshop {
+	view {
+		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:t3sixshop/Resources/Private/Templates/
+		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:t3sixshop/Resources/Private/Partials/
+		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:t3sixshop/Resources/Private/Layouts/
+		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to ext CSS (FE)
+		mainCss = EXT:t3sixshop/Resources/Public/Css/t3sixshop.css
+		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to zoom CSS (FE)
+		zoomCss = EXT:t3sixshop/Resources/Public/Css/jquery.jqzoom.css
+		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to lazyload jQuery (FE)
+		lazyJs = EXT:t3sixshop/Resources/Public/Js/jquery.lazyload.min.js
+		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to jScroll jQuery (FE)
+		scrollJs = EXT:t3sixshop/Resources/Public/Js/jquery.jscroll.min.js
+		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to jqZoom jQuery (FE)
+		zoomJs = EXT:t3sixshop/Resources/Public/Js/jquery.jqzoom-core.js
+		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to jqZoom jQuery (FE)
+		validJs = EXT:t3sixshop/Resources/Public/Js/jquery.validate.pack.js	
+	}
+	persistence {
+		# cat=plugin.tx_t3sixshop//a; type=string; label=Default storage PID
+		storagePid = 16
+	}
+	settings {
+		# cat=plugin.tx_t3sixshop//a; type=string; label=Details PID
+		singlePid = 17
+		# cat=plugin.tx_t3sixshop//a; type=string; label=Category UID
+		category = 
+		# cat=plugin.tx_t3sixshop//a; type=string; label=Product List PID
+		listPid = 3
+		# cat=plugin.tx_t3sixshop//a; type=string; label=Cart PID
+		cartPid = 4
+		# cat=plugin.tx_t3sixshop//a; type=string; label=Enable jQuery Lazy loading
+		lazyLoad = 1
+		# cat=plugin.tx_t3sixshop//a; type=string; label=Enable jQuery jScroll instead of paging
+		jScroll = 1
+		# cat=plugin.tx_t3sixshop//a; type=string; label=jScroll ajax request PID
+		jScrollPid = 26
+		# cat=plugin.tx_t3sixshop//a; type=string; label= Shop currency
+		currency = Rs.
+		# cat=plugin.tx_t3sixshop//a; type=string; label= Order ID prefix
+		orderPrefix = NHD
+		# cat=plugin.tx_t3sixshop//a; type=string; label= Order email
+		orderEmail = order@newtownhomedelivery.com
+		# cat=plugin.tx_t3sixshop//a; type=string; label= Order email name
+		orderEmailName = Administrator
+		# cat=plugin.tx_t3sixshop//a; type=string; label= System email
+		senderEmail = nobody@newtownhomedelivery.com
+		# cat=plugin.tx_t3sixshop//a; type=string; label= System email name
+		senderEmailName = System
+		# cat=plugin.tx_t3sixshop//a; type=string; label= Min. order amount
+		minOrderAmt = 100
+		# cat=plugin.tx_t3sixshop//a; type=string; label=Registration PID
+		registerPid = 24
+		
+		list {
+			# cat=plugin.tx_t3sixshop//a; type=string; label=Records per page
+			perpage = 10
+			# cat=plugin.tx_t3sixshop//a; type=string; label=Width of thumb nails
+			width = 150
+			# cat=plugin.tx_t3sixshop//a; type=string; label=Height of thumb nails
+			height = 120
+			# cat=plugin.tx_t3sixshop//a; type=string; label=Crop text in list
+			crop = 120
+		}
+		detail {
+			# cat=plugin.tx_t3sixshop//a; type=string; label=Width of image
+			width = 300
+			# cat=plugin.tx_t3sixshop//a; type=string; label=Height of image
+			height = 240
+			# cat=plugin.tx_t3sixshop//a; type=string; label=Enable zooming library
+			zoom = 1
+			# cat=plugin.tx_t3sixshop//a; type=string; label=Width of thumb image
+			thumbwidth = 40
+			# cat=plugin.tx_t3sixshop//a; type=string; label=Height of thumb image
+			thumbheight = 40
+		}
+		# cat=plugin.tx_t3sixshop//a; type=string; label=List featured or all
+		feature = 0
+		# cat=plugin.tx_t3sixshop//a; type=string; label=No. of items in Featured block
+		feature_limit =  4
+	}
+}

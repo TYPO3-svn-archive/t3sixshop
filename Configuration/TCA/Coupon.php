@@ -3,13 +3,13 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$TCA['tx_t3sixshop_domain_model_category'] = array(
-	'ctrl' => $TCA['tx_t3sixshop_domain_model_category']['ctrl'],
+$TCA['tx_t3sixshop_domain_model_coupon'] = array(
+	'ctrl' => $TCA['tx_t3sixshop_domain_model_coupon']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, parent, products',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, code, usage, discount, dtype, orders',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, parent, products,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, code, discount, dtype, usage, orders,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -37,8 +37,8 @@ $TCA['tx_t3sixshop_domain_model_category'] = array(
 				'items' => array(
 					array('', 0),
 				),
-				'foreign_table' => 'tx_t3sixshop_domain_model_category',
-				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_category.pid=###CURRENT_PID### AND tx_t3sixshop_domain_model_category.sys_language_uid IN (-1,0)',
+				'foreign_table' => 'tx_t3sixshop_domain_model_coupon',
+				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_coupon.pid=###CURRENT_PID### AND tx_t3sixshop_domain_model_coupon.sys_language_uid IN (-1,0)',
 			),
 		),
 		'l10n_diffsource' => array(
@@ -93,41 +93,64 @@ $TCA['tx_t3sixshop_domain_model_category'] = array(
 				),
 			),
 		),
-		'name' => array(
+		'code' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_category.name',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.code',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim,required'
+				'eval' => 'trim,required',
 			),
 		),
-		'parent'=> array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_category.parent',
+		'usage' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.usage',
 			'config' => array(
 				'type' => 'select',
-				'foreign_table' => 'tx_t3sixshop_domain_model_category',
-				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_category.sys_language_uid IN (-1,0) ORDER BY tx_t3sixshop_domain_model_category.name',
 				'items' => array(
-					array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_category.parent.0', 0)
+					array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.usage.O', 'O'),
+					array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.usage.M', 'M'),
 				),
+				'size' => 1,
+				'maxitems' => 1,
 			),
 		),
-		'products' => array(
+		'discount' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_category.products',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.discount',
+			'config' => array(
+				'type' => 'input',
+				'size' => 10,
+				'eval' => 'double2,required',
+			),
+		),
+		'dtype' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.dtype',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+						array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.dtype.F', 'F'),
+						array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.dtype.P', 'P'),
+				),
+				'size' => 1,
+				'maxitems' => 1,
+			),
+		),
+		'orders' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.orders',
 			'config' => array(
 				'type' => 'inline',
-				'foreign_table' => 'tx_t3sixshop_domain_model_product',
-				'foreign_field' => 'category',
+				'foreign_table' => 'tx_t3sixshop_domain_model_order',
+				'foreign_field' => 'coupon',
 				'maxitems'      => 9999,
 				'appearance' => array(
-					'collapseAll' => 1,
+					'collapseAll' => 0,
 					'levelLinksPosition' => 'top',
 					'showSynchronizationLink' => 1,
 					'showPossibleLocalizationRecords' => 1,
-					'showAllLocalizationLink' => 1
+					'showAllLocalizationLink' => 1,
 				),
 			),
 		),

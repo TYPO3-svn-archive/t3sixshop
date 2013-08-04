@@ -3,11 +3,11 @@
 	<dl class="def-list-1">
 		<dt><f:link.action action="show" pluginName="Show" pageUid="{settings.singlePid}" arguments="{product : product}" title="{product.name}">{product.name}</f:link.action></dt>
 		<dd>
-			<f:format.crop maxCharacters="{settings.list.crop}" append="&nbsp;[...]">{product.description}</f:format.crop>
+			<f:format.crop maxCharacters="{settings.list.crop}" append="&nbsp;[...]">{product.shorttext}</f:format.crop>
 		</dd>
 	</dl>
 	<div class="price-block">
-		<div class="price"><!-- <label><f:translate key="tx_t3sixshop_domain_model_product.price" /></label>:  -->{settings.currency} 
+		<div class="price">{settings.currency} 
 		<f:if condition="{0:product.price}=={0:product.currentprice}">
 			<f:then>
 				<f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{product.price}</f:format.number> 

@@ -13,9 +13,15 @@
 			<trans-unit id="tx_t3sixshop_domain_model_category.products">
 				<source>Products</source>
 			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_category.parent">
+				<source>Parent</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_category.parent.0">
+				<source> None (root)</source>
+			</trans-unit>
 			
 			<trans-unit id="tx_t3sixshop_domain_model_manufacturer">
-				<source>Nanufacturer</source>
+				<source>Manufacturer</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_manufacturer.name">
 				<source>Name</source>
@@ -50,9 +56,6 @@
 			<trans-unit id="tx_t3sixshop_domain_model_product.manufacturer">
 				<source>Manufacturer</source>
 			</trans-unit>
-			<trans-unit id="tx_t3sixshop_domain_model_product.pgroup">
-				<source>Price group</source>
-			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_product.category.0" xml:space="preserve">
 				<source> -- select -- </source>
 			</trans-unit>
@@ -82,6 +85,9 @@
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_product.instock">
 				<source>Instock</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.delivertime">
+				<source>Delivery Time</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_product.featured">
 				<source>Featured</source>
@@ -141,6 +147,12 @@
 			<trans-unit id="tx_t3sixshop_domain_model_order.remark">
 				<source>Remark</source>
 			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.coupon">
+				<source>Coupon</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.deliveryoption">
+				<source>Delivery option</source>
+			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.discount">
 				<source>Discount</source>
 			</trans-unit>
@@ -159,6 +171,9 @@
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_orderitem.qty">
 				<source>Qty</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_orderitem.unit">
+				<source>Unit</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_orderitem.newqty">
 				<source>New quantity</source>
@@ -182,6 +197,50 @@
 				<source>Remark</source>
 			</trans-unit>
 
+			<trans-unit id="tx_t3sixshop_domain_model_coupon">
+				<source>Coupon</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.code">
+				<source>Code</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.discount">
+				<source>Discount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.usage">
+				<source>Usage type</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.usage.O" xml:space="preserve">
+				<source> One Time </source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.usage.M" xml:space="preserve">
+				<source> Multiple </source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.dtype">
+				<source>Discount type</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.dtype.F" xml:space="preserve">
+				<source> Flat </source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.dtype.P" xml:space="preserve">
+				<source> Percentage </source>
+			</trans-unit>
+			
+			<trans-unit id="tx_t3sixshop_domain_model_deliveryoption">
+				<source>Delivery option</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_deliveryoption.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_deliveryoption.price">
+				<source>Price</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_deliveryoption.freeprice">
+				<source>Free price</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_deliveryoption.schedule">
+				<source>Schedule</source>
+			</trans-unit>
+			
 			<trans-unit id="tx_t3sixshop_domain_model_customer">
 				<source>Customer</source>
 			</trans-unit>
@@ -212,6 +271,28 @@
 				<source>No. of featured products</source>
 			</trans-unit>
 			
+			
+			<trans-unit id="tx_t3sixshop_domain_model_cart">
+				<source>Cart</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_cart.user">
+				<source>Customer</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_cart.crdate">
+				<source>Date</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_cart.session">
+				<source>Session</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_cart.amount">
+				<source>Amount</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_cart.status">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_cart.cartitems">
+				<source>Items</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

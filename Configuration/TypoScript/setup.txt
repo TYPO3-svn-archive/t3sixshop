@@ -12,9 +12,6 @@ plugin.tx_t3sixshop {
 		category = {$plugin.tx_t3sixshop.settings.category}
 		listPid = {$plugin.tx_t3sixshop.settings.listPid}
 		cartPid = {$plugin.tx_t3sixshop.settings.cartPid}
-		lazyLoad = {$plugin.tx_t3sixshop.settings.lazyLoad}
-		jScroll = {$plugin.tx_t3sixshop.settings.jScroll}
-		jScrollPid = {$plugin.tx_t3sixshop.settings.jScrollPid}
 		currency = {$plugin.tx_t3sixshop.settings.currency}
 		orderPrefix = {$plugin.tx_t3sixshop.settings.orderPrefix}
 		orderEmail = {$plugin.tx_t3sixshop.settings.orderEmail}
@@ -48,14 +45,10 @@ plugin.tx_t3sixshop {
 # CSS and JS inclusion
 page.includeCSS {
 	tx_t3sixshop_css1 = {$plugin.tx_t3sixshop.view.mainCss}
-	tx_t3sixshop_css2 = {$plugin.tx_t3sixshop.view.zoomCss}
 }
 
 page.includeJS {
-	tx_t3sixshop_file1 = {$plugin.tx_t3sixshop.view.lazyJs}
-	tx_t3sixshop_file2 = {$plugin.tx_t3sixshop.view.scrollJs}
-	tx_t3sixshop_file3 = {$plugin.tx_t3sixshop.view.zoomJs}
-	tx_t3sixshop_file4 = {$plugin.tx_t3sixshop.view.validJs}
+	tx_t3sixshop_file1 = {$plugin.tx_t3sixshop.view.validJs}
 }
 
 plugin.tx_t3sixshop._CSS_DEFAULT_STYLE (

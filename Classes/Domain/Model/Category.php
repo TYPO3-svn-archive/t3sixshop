@@ -41,6 +41,26 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @validate NotEmpty
 	 */
 	protected $name;
+	
+	/**
+	 * 
+	 * @var \boolean
+	 */
+	protected $separatebill;
+	
+	
+	/**
+	 * 
+	 * @var \float
+	 */
+	protected $minorderval;
+	
+	/**
+	 * related
+	 *
+	 * @var \integer
+	 */
+	protected $delivertime;
 
 	/**
 	 * products
@@ -90,6 +110,72 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setName($name) {
 		$this->name = $name;
+	}
+	
+	/**
+	 * Returns the minorderval
+	 *
+	 * @return \float $minorderval
+	 */
+	public function getMinorderval() {
+		return $this->minorderval;
+	}
+	
+	/**
+	 * Sets the minorderval
+	 *
+	 * @param \float $minorderval
+	 * @return void
+	 */
+	public function setMinorderval($minorderval) {
+		$this->minorderval = $minorderval;
+	}
+	
+	/**
+	 * Returns the separatebill
+	 *
+	 * @return boolean $separatebill
+	 */
+	public function getSeparatebill() {
+		return $this->separatebill;
+	}
+	
+	/**
+	 * Sets the separatebill
+	 *
+	 * @param boolean $separatebill
+	 * @return void
+	 */
+	public function setSeparatebill($separatebill) {
+		$this->separatebill = $separatebill;
+	}
+	
+	/**
+	 * Returns the boolean state of separatebill
+	 *
+	 * @return boolean
+	 */
+	public function isSeparatebill() {
+		return $this->getseparatebill();
+	}
+	
+	/**
+	 * Returns the delivertime
+	 *
+	 * @return \integer $delivertime
+	 */
+	public function getDelivertime() {
+		return $this->delivertime;
+	}
+	
+	/**
+	 * Sets the delivertime
+	 *
+	 * @param \integer $delivertime
+	 * @return void
+	 */
+	public function setDelivertime($delivertime) {
+		$this->delivertime = $delivertime;
 	}
 
 	/**

@@ -20,21 +20,21 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-		$_EXTKEY,
-		'Rate',
-		'Rate Chart'
+	$_EXTKEY,
+	'Rate',
+	'Rate Chart'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
 	'Mini',
-	'Mini Basket'
+	'Mini Cart'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
-	'Basket',
-	'Basket'
+	'Cart',
+	'Cart'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
@@ -50,9 +50,9 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_
 );
 
 /*
-$pluginSignature = str_replace('_','',$_EXTKEY) . '_basket';
+$pluginSignature = str_replace('_','',$_EXTKEY) . '_cart';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_basket.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_cart.xml');
 */
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'T3 Shop for V6');
@@ -113,38 +113,6 @@ $TCA['tx_t3sixshop_domain_model_manufacturer'] = array(
 				),
 				'searchFields' => 'name,products,',
 				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Manufacturer.php',
-				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_t3sixshop_domain_model_category.gif'
-		),
-);
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_t3sixshop_domain_model_pgroup', 'EXT:t3sixshop/Resources/Private/Language/locallang_csh_tx_t3sixshop_domain_model_pgroup.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_t3sixshop_domain_model_pgroup');
-$TCA['tx_t3sixshop_domain_model_pgroup'] = array(
-		'ctrl' => array(
-				'title'	=> 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_pgroup',
-				'label' => 'name',
-				'label_alt' => 'price',
-				'label_alt_force' => TRUE,
-				'tstamp' => 'tstamp',
-				'crdate' => 'crdate',
-				'cruser_id' => 'cruser_id',
-				'dividers2tabs' => TRUE,
-				'sortby' => 'sorting',
-				'versioningWS' => 2,
-				'versioning_followPages' => TRUE,
-				'origUid' => 't3_origuid',
-				'languageField' => 'sys_language_uid',
-				'transOrigPointerField' => 'l10n_parent',
-				'transOrigDiffSourceField' => 'l10n_diffsource',
-				'delete' => 'deleted',
-				'enablecolumns' => array(
-						'disabled' => 'hidden',
-						'starttime' => 'starttime',
-						'endtime' => 'endtime',
-						'crdate' => 'crdate',
-				),
-				'searchFields' => 'name,price,products,',
-				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Pgroup.php',
 				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_t3sixshop_domain_model_category.gif'
 		),
 );
@@ -240,6 +208,123 @@ $TCA['tx_t3sixshop_domain_model_orderitem'] = array(
 	),
 );
 
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_t3sixshop_domain_model_cart', 'EXT:t3sixshop/Resources/Private/Language/locallang_csh_tx_t3sixshop_domain_model_cart.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_t3sixshop_domain_model_cart');
+$TCA['tx_t3sixshop_domain_model_cart'] = array(
+		'ctrl' => array(
+				'title'	=> 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_cart',
+				'label' => 'session',
+				'label_alt' => 'amount',
+				'label_alt_force' => TRUE,
+				'tstamp' => 'tstamp',
+				'crdate' => 'crdate',
+				'cruser_id' => 'cruser_id',
+				'dividers2tabs' => TRUE,
+				'default_sortby' => 'ORDER BY uid DESC',
+				'versioningWS' => 2,
+				'versioning_followPages' => TRUE,
+				'origUid' => 't3_origuid',
+				'languageField' => 'sys_language_uid',
+				'transOrigPointerField' => 'l10n_parent',
+				'transOrigDiffSourceField' => 'l10n_diffsource',
+				'delete' => 'deleted',
+				'enablecolumns' => array(
+						'disabled' => 'hidden',
+						'starttime' => 'starttime',
+						'endtime' => 'endtime',
+				),
+				'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Cart.php',
+				'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/basket.png'
+		),
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_t3sixshop_domain_model_cartitem', 'EXT:t3sixshop/Resources/Private/Language/locallang_csh_tx_t3sixshop_domain_model_cartitem.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_t3sixshop_domain_model_cartitem');
+$TCA['tx_t3sixshop_domain_model_cartitem'] = array(
+	'ctrl' => array(
+		'title'	=> 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_cartitem',
+		'label' => 'product',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'dividers2tabs' => TRUE,
+		'default_sortby' => 'ORDER BY uid DESC',
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+		),
+		'searchFields' => 'qty,rate,amount,product,',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Cartitem.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/item.png'
+	),
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_t3sixshop_domain_model_coupon', 'EXT:t3sixshop/Resources/Private/Language/locallang_csh_tx_t3sixshop_domain_model_coupon.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_t3sixshop_domain_model_coupon');
+$TCA['tx_t3sixshop_domain_model_coupon'] = array(
+	'ctrl' => array(
+		'title'	=> 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon',
+		'label' => 'code',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'dividers2tabs' => TRUE,
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+			'crdate' => 'crdate',
+		),
+		'searchFields' => 'code,discount,',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Coupon.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_t3sixshop_domain_model_coupon.gif'
+	),
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_t3sixshop_domain_model_deliveryoption', 'EXT:t3sixshop/Resources/Private/Language/locallang_csh_tx_t3sixshop_domain_model_deliveryoption.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_t3sixshop_domain_model_deliveryoption');
+$TCA['tx_t3sixshop_domain_model_deliveryoption'] = array(
+	'ctrl' => array(
+		'title'	=> 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_deliveryoption',
+		'label' => 'name',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'dividers2tabs' => TRUE,
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+			'crdate' => 'crdate',
+		),
+		'searchFields' => 'name,price,',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Deliveryoption.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_t3sixshop_domain_model_deliveryoption.gif'
+	),
+);
+
 $tmp_t3sixshop_columns = array(
 
 	'apartment' => array(
@@ -280,16 +365,6 @@ $tmp_t3sixshop_columns = array(
 );
 
 t3lib_extMgm::addTCAcolumns('fe_users',$tmp_t3sixshop_columns, 1);
-t3lib_extMgm::addToAllTCAtypes('fe_users', 'apartment, voucher,orders');
-
-//t3lib_extMgm::addToAllTCATypes('fe_users','--div--;Direct mail,module_sys_dmail_html;;;;1-1-1');
-
-/*
-$TCA['fe_users']['columns'][$TCA['fe_users']['ctrl']['type']]['config']['items'][] = array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:fe_users.tx_extbase_type.Tx_T3sixshop_Customer','Tx_T3sixshop_Customer');
-
-$TCA['fe_users']['types']['Tx_T3sixshop_Customer']['showitem'] = $TCA['fe_users']['types']['1']['showitem'];
-$TCA['fe_users']['types']['Tx_T3sixshop_Customer']['showitem'] .= ',--div--;LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_customer,';
-$TCA['fe_users']['types']['Tx_T3sixshop_Customer']['showitem'] .= 'voucher, orders';
-*/
+t3lib_extMgm::addToAllTCAtypes('fe_users', 'apartment,voucher,orders');
 
 ?>

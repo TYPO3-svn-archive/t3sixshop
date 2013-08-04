@@ -61,10 +61,10 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $manufacturer;
 	
 	/**
-	 * pgroup
-	 * @var \Arm\T3sixshop\Domain\Model\Pgroup
+	 * shorttext
+	 * @var \string
 	 */
-	protected $pgroup;
+	protected $shorttext;
 
 	/**
 	 * description
@@ -137,7 +137,7 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * related
 	 *
-	 * @var \integer
+	 * @var  \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Product>
 	 */
 	protected $related;
 	
@@ -145,6 +145,16 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Initialize
 	 */
 	public function initializeObject() {
+		$this->initStorageObjects();
+	}
+	
+	/**
+	 * Initializes all ObjectStorage properties.
+	 *
+	 * @return void
+	 */
+	protected function initStorageObjects() {
+		$this->related = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 	
 	/**
@@ -184,21 +194,21 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * Return the pgroup
-	 * @return \Arm\T3sixshop\Domain\Model\Pgroup
+	 * Return the shorttext
+	 * @return \string
 	 */
-	public function getPgroup() {
-		return $this->pgroup;
+	public function getShorttext() {
+		return $this->shorttext;
 	}
 	
 	/**
-	 * Sets the pgroup
+	 * Sets the shorttext
 	 *
-	 * @param \Arm\T3sixshop\Domain\Model\Pgroup $pgroup
+	 * @param \string $shorttext
 	 * @return void
 	 */
-	public function setPgroup(\Arm\T3sixshop\Domain\Model\Pgroup $pgroup) {
-		$this->pgroup = $pgroup;
+	public function setShorttext($shorttext) {
+		$this->shorttext = $shorttext;
 	}
 
 	/**
@@ -430,11 +440,32 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function isFeatured() {
 		return $this->getFeatured();
 	}
+	
+	
+	/**
+	 * Adds a Product
+	 *
+	 * @param \Arm\T3sixshop\Domain\Model\Product $product
+	 * @return void
+	 */
+	public function addRelated(\Arm\T3sixshop\Domain\Model\Product $product) {
+		$this->related->attach($product);
+	}
+	
+	/**
+	 * Removes a Product
+	 *
+	 * @param \Arm\T3sixshop\Domain\Model\Product $product
+	 * @return void
+	 */
+	public function removeRelated(\Arm\T3sixshop\Domain\Model\Product $product) {
+		$this->related->detach($product);
+	}
 
 	/**
 	 * Returns the related
 	 *
-	 * @return \integer $related
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Product> $related
 	 */
 	public function getRelated() {
 		return $this->related;
@@ -443,10 +474,10 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the related
 	 *
-	 * @param \integer $related
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Product> $related
 	 * @return void
 	 */
-	public function setRelated($related) {
+	public function setRelated(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $related) {
 		$this->related = $related;
 	}
 

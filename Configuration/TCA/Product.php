@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_t3sixshop_domain_model_product'] = array(
 	'ctrl' => $TCA['tx_t3sixshop_domain_model_product']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, category, manufacturer, pgroup, name, description, discount, unit, price, image, instock, minorder, featured, related',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, category, manufacturer, name, shorttext, description, discount, unit, price, image, instock, minorder, featured, related',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, category, manufacturer, pgroup, name, description,--div--;LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_product.tab.more, unit, price, discount, instock, minorder, image, featured, related,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, category, manufacturer, name, shorttext, description,--div--;LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_product.tab.more, unit, price, discount, featured, instock, minorder, image, related,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -102,6 +102,16 @@ $TCA['tx_t3sixshop_domain_model_product'] = array(
 				'eval' => 'trim,required'
 			),
 		),
+		'shorttext' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_product.shorttext',
+			'config' => array(
+				'type' => 'text',
+				'cols' => 40,
+				'rows' => 5,
+				'eval' => 'trim'
+			),
+		),
 		'description' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_product.description',
@@ -109,8 +119,19 @@ $TCA['tx_t3sixshop_domain_model_product'] = array(
 				'type' => 'text',
 				'cols' => 40,
 				'rows' => 8,
-				'eval' => 'trim'
+				'eval' => 'trim',
+				'wizards' => array(
+					'RTE' => array(
+						'icon' => 'wizard_rte2.gif',
+						'notNewRecords'=> 1,
+						'RTEonly' => 1,
+						'script' => 'wizard_rte.php',
+						'title' => 'LLL:EXT:cms/locallang_ttc.xml:bodytext.W.RTE',
+						'type' => 'script'
+					),
+				),
 			),
+			'defaultExtras' => 'richtext[]',
 		),
 		'discount' => array(
 			'exclude' => 0,
@@ -142,26 +163,20 @@ $TCA['tx_t3sixshop_domain_model_product'] = array(
 		'image' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_product.image',
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('image',
-				array(
-						'maxitems' => 5,
-						'appearance' => array(
-								'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('image', array(
+					'maxitems' => 5,
+					'minitems' => 1,
+					'appearance' => array(
+						'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+					),
+					'foreign_types' => array(
+						'0' => array(
+								'showitem' => '--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette'
 						),
-						// custom configuration for displaying fields in the overlay/reference table
-						// to use the imageoverlayPalette instead of the basicoverlayPalette
-						'foreign_types' => array(
-								'0' => array(
-										'showitem' => '
-							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-								),
-								\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
-										'showitem' => '
-							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-							--palette--;;filePalette'
-								)
-						)
+						\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+							'showitem' => '--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,--palette--;;filePalette'
+						),
+					),
 				),
 				$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
 				'php'
@@ -215,17 +230,6 @@ $TCA['tx_t3sixshop_domain_model_product'] = array(
 				),
 			),
 		),
-			'pgroup' => array(
-					'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_product.pgroup',
-					'config' => array(
-							'type' => 'select',
-							'foreign_table' => 'tx_t3sixshop_domain_model_pgroup',
-							'foreign_table_where' => 'AND tx_t3sixshop_domain_model_pgroup.sys_language_uid IN (-1,0) ORDER BY tx_t3sixshop_domain_model_pgroup.name ',
-							'items' => array(
-									array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_product.pgroup.0', 0)
-							),
-					),
-			),
 			'manufacturer' => array(
 					'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_product.manufacturer',
 					'config' => array(

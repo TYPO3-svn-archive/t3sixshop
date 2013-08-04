@@ -3,13 +3,13 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$TCA['tx_t3sixshop_domain_model_orderitem'] = array(
-	'ctrl' => $TCA['tx_t3sixshop_domain_model_orderitem']['ctrl'],
+$TCA['tx_t3sixshop_domain_model_cartitem'] = array(
+	'ctrl' => $TCA['tx_t3sixshop_domain_model_cartitem']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, orders, qty, rate, amount, product, name, unit, status, remark, newqty, newamount',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, cart, qty, rate, amount, product, name, unit',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, orders, product, name, unit, qty, rate, amount, status, remark, newqty, newamount,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, cart, product, name, unit, qty, rate, amount,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -37,8 +37,8 @@ $TCA['tx_t3sixshop_domain_model_orderitem'] = array(
 				'items' => array(
 					array('', 0),
 				),
-				'foreign_table' => 'tx_t3sixshop_domain_model_orderitem',
-				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_orderitem.pid=###CURRENT_PID### AND tx_t3sixshop_domain_model_orderitem.sys_language_uid IN (-1,0)',
+				'foreign_table' => 'tx_t3sixshop_domain_model_cartitem',
+				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_cartitem.pid=###CURRENT_PID### AND tx_t3sixshop_domain_model_cartitem.sys_language_uid IN (-1,0)',
 			),
 		),
 		'l10n_diffsource' => array(
@@ -95,7 +95,7 @@ $TCA['tx_t3sixshop_domain_model_orderitem'] = array(
 		),
 		'unit' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_orderitem.unit',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_cartitem.unit',
 			'config' => array(
 				'type' => 'input',
 				'size' => 15,
@@ -104,26 +104,17 @@ $TCA['tx_t3sixshop_domain_model_orderitem'] = array(
 		),
 		'qty' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_orderitem.qty',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_cartitem.qty',
 			'config' => array(
 				'type' => 'input',
 				'size' => 15,
-				'eval' => 'double2,required',
+				'eval' => 'double2',
 				'readOnly' => TRUE
-			),
-		),
-		'newqty' => array(
-			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_orderitem.newqty',
-			'config' => array(
-				'type' => 'input',
-				'size' => 15,
-				'eval' => 'double2'
 			),
 		),
 		'rate' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_orderitem.rate',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_cartitem.rate',
 			'config' => array(
 				'type' => 'input',
 				'size' => 15,
@@ -133,55 +124,21 @@ $TCA['tx_t3sixshop_domain_model_orderitem'] = array(
 		),
 		'amount' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_orderitem.amount',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_cartitem.amount',
 			'config' => array(
 				'type' => 'input',
 				'size' => 15,
-				'eval' => 'double2,required',
+				'eval' => 'double2',
 				'readOnly' => TRUE
 			),
 		),
-		'newamount' => array(
+		'cart' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_orderitem.newamount',
-			'config' => array(
-				'type' => 'input',
-				'size' => 15,
-				'eval' => 'double2'
-			),
-		),
-		'remark' => array(
-			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_orderitem.remark',
-			'config' => array(
-				'type' => 'input',
-				'size' => 30,
-				'eval' => 'trim',
-			),
-		),
-		'status' => array(
-			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_orderitem.status',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_cartitem.cart',
 			'config' => array(
 				'type' => 'select',
-				'items' => array(
-						array('Normal', 0),
-						array('Returned', 1),
-						array('Quantity changed', 2),
-						array('Cancelled', 3),
-				),
-				'size' => 1,
-				'maxitems' => 1,
-				'eval' => 'required'
-			),
-		),
-		'orders' => array(
-			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_orderitem.orders',
-			'config' => array(
-				'type' => 'select',
-				'foreign_table' => 'tx_t3sixshop_domain_model_order',
-				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_order.sys_language_uid IN (-1,0) ORDER BY tx_t3sixshop_domain_model_order.uid',
+				'foreign_table' => 'tx_t3sixshop_domain_model_cart',
+				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_cart.sys_language_uid IN (-1,0) ORDER BY tx_t3sixshop_domain_model_cart.uid',
 				'size' => 1,
 				'readOnly' => TRUE,
 			),
@@ -198,7 +155,7 @@ $TCA['tx_t3sixshop_domain_model_orderitem'] = array(
 		),
 		'product' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_orderitem.product',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_cartitem.product',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_t3sixshop_domain_model_product',

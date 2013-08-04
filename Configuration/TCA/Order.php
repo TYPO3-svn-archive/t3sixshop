@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_t3sixshop_domain_model_order'] = array(
 	'ctrl' => $TCA['tx_t3sixshop_domain_model_order']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, session, user, fname, lname, email, phone, apartment, address, zip, amount, totalamount, status, remark, discount, deliveryon, orderid, orderitems',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, session, user, fname, lname, email, phone, apartment, address, zip, amount, totalamount, status, remark, discount, deliveryon, orderid, coupon, deliveryoption, orderitems',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, crdate, session, orderid, totalamount, discount, amount, status, remark, deliveryon, orderitems,--div--;LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_order.tab.customer, user, fname, lname, email, phone, apartment, address, zip,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, crdate, session, orderid, totalamount, discount, amount, status, remark, coupon, deliveryoption, deliveryon, orderitems,--div--;LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_order.tab.customer, user, fname, lname, email, phone, apartment, address, zip,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -216,14 +216,13 @@ $TCA['tx_t3sixshop_domain_model_order'] = array(
 					array('-- Trash --', 0),
 					array('Pending', 1),
 					array('Processing', 2),
-					array('Shipped', 3),
+					array('In shipping', 3),
 					array('Delivered', 4),
 					array('Returned', 5),
 					array('Cancelled', 6),
 				),
 				'size' => 1,
-				'maxitems' => 1,
-				'eval' => 'required'
+				'maxitems' => 1
 			),
 		),
 		'remark' => array(
@@ -242,6 +241,27 @@ $TCA['tx_t3sixshop_domain_model_order'] = array(
 				'type' => 'input',
 				'size' => 30,
 				'eval' => 'double2'
+			),
+		),
+		'coupon' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_order.coupon',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'tx_t3sixshop_domain_model_coupon',
+				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_coupon.hidden=0 ORDER BY tx_t3sixshop_domain_model_coupon.uid',
+				'items' => array(
+						array('-- none --', 0),
+				),
+			),
+		),
+		'deliveryoption' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_order.deliveryoption',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'tx_t3sixshop_domain_model_deliveryoption',
+				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_deliveryoption.hidden=0 ORDER BY tx_t3sixshop_domain_model_deliveryoption.price',
 			),
 		),
 		'deliveryon' => array(

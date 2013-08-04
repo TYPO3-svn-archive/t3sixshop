@@ -2,21 +2,19 @@
 <f:section name="main">
 <div id="product-main">
 	<div id="left-pblock">
-		<f:if condition="{settings.detail.zoom}">
-			<f:then>
-				<f:render partial="Product/Detail" arguments="{product:product, settings:settings}" />
-			</f:then>
-			<f:else>
-				<div id="prd-img-main">
-					<f:image src="{product.image.uid}"  width="{settings.detail.width}c" height="{settings.detail.height}c" treatIdAsReference="1"  alt="{product.name}" />
-				</div>
-			</f:else>
-		</f:if>
+		<div id="prd-img-main">
+			<f:image src="{product.image.uid}"  width="{settings.detail.width}c" height="{settings.detail.height}c" treatIdAsReference="1"  alt="{product.name}" />
+		</div>
 	</div>
 	<div id="right-pblock" class="clearfix">
 		<div id="prd-details">
 			<h1>{product.name}</h1>
-			<div id="prd-desc">{product.description}</div>
+			<div id="prd-desc">{product.shorttext}
+				<f:if condition="{product.description}">
+				<br />
+				<f:format.raw>{product.description}</f:format.raw>
+				</f:if>
+			</div>
 			<div id="prd-price" class="price"><label><f:translate key="tx_t3sixshop_domain_model_product.price" /></label>:  &nbsp;{settings.currency} 
 				<f:if condition="{0:product.price}=={0:product.currentprice}">
 					<f:then>
@@ -30,7 +28,7 @@
 			<div id="prd-order">
 			<f:if condition="{0:product.instock} == {0:1}">
 				<f:then>
-					<f:form name="product" id="orderFrm" pageUid="{settings.cartPid}" method="post" pluginName="Basket" controller="Order" action="update" object="{product}">
+					<f:form name="product" id="orderFrm" pageUid="{settings.cartPid}" method="post" pluginName="Cart" controller="Order" action="update" object="{product}">
 						<label><f:translate key="tx_t3sixshop_domain_model_product.qty" />: </label> <f:form.textfield name="quantity" id="quantity" value="{qty}" class="requiredMinorder" /><br />
 						<div id="orderbtn"><f:form.submit name="orderBtn" value="{f:translate(key:'tx_t3sixshop_domain_model_product.btn_buy')}" class="button" /></div>
 						<f:form.hidden name="minorder" id="minorder" value="{product.minorder}" />
@@ -43,6 +41,19 @@
 			</div>
 		</div>
 	</div>
+	<f:if condition="{product.related}">
+		<div style="display:block; clear:both"></div>
+		<div id="product-related">
+			<h4><f:translate key="tx_t3sixshop_domain_model_product.related" /></h4>
+			<div class="grid-view">
+				<ul class="clearfix product-list">
+					<f:for each="{product.related}" as="related">
+						<li class="item clearfix"><f:render partial="Product/List" arguments="{product:related, settings:settings}" /></li>
+					</f:for>
+				</ul>
+			</div>
+		</div>
+	</f:if>
 </div>
 
 </f:section>

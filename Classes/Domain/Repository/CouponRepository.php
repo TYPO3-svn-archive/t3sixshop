@@ -31,13 +31,7 @@ namespace Arm\T3sixshop\Domain\Repository;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class PgroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class CouponRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
-	/**
-	 * Set the ordering
-	 *
-	 * @var array
-	 */
-	protected $defaultOrderings = array('name' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING);
 }
 ?>

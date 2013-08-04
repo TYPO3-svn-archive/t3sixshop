@@ -32,7 +32,7 @@ namespace Arm\T3sixshop\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Pgroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Deliveryoption extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * name
@@ -48,13 +48,25 @@ class Pgroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var \float
 	 */
 	protected $price;
+	
+	/**
+	 * 
+	 * @var \float
+	 */
+	protected $freeprice;
+	
+	/**
+	 * 
+	 * @var \string
+	 */
+	protected $schedule;
 
 	/**
-	 * products
+	 * order
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Product>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Order>
 	 */
-	protected $products;
+	protected $orders;
 
 	/**
 	 * __construct
@@ -77,7 +89,7 @@ class Pgroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->products = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->orders = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
@@ -117,45 +129,82 @@ class Pgroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setPrice($price) {
 		$this->price = $price;
 	}
-
+	
 	/**
-	 * Adds a Product
+	 * Returns the freeprice
 	 *
-	 * @param \Arm\T3sixshop\Domain\Model\Product $product
+	 * @return \float $freeprice
+	 */
+	public function getFreeprice() {
+		return $this->freeprice;
+	}
+	
+	/**
+	 * Sets the freeprice
+	 *
+	 * @param \float $freeprice
 	 * @return void
 	 */
-	public function addProduct(\Arm\T3sixshop\Domain\Model\Product $product) {
-		$this->products->attach($product);
+	public function setFreeprice($freeprice) {
+		$this->freeprice = $freeprice;
 	}
 
 	/**
-	 * Removes a Product
+	 * Adds a Order
 	 *
-	 * @param \Arm\T3sixshop\Domain\Model\Product $productToRemove The Product to be removed
+	 * @param \Arm\T3sixshop\Domain\Model\Order $order
 	 * @return void
 	 */
-	public function removeProduct(\Arm\T3sixshop\Domain\Model\Product $productToRemove) {
-		$this->products->detach($productToRemove);
+	public function addOrder(\Arm\T3sixshop\Domain\Model\Order $order) {
+		$this->orders->attach($order);
 	}
 
 	/**
-	 * Returns the products
+	 * Removes a Order
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Product> $products
-	 */
-	public function getProducts() {
-		return $this->products;
-	}
-
-	/**
-	 * Sets the products
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Product> $products
+	 * @param \Arm\T3sixshop\Domain\Model\Order $orderToRemove The Order to be removed
 	 * @return void
 	 */
-	public function setProducts(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $products) {
-		$this->products = $products;
+	public function removeOrder(\Arm\T3sixshop\Domain\Model\Order $orderToRemove) {
+		$this->orders->detach($orderToRemove);
 	}
 
+	/**
+	 * Returns the orders
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Order> $orders
+	 */
+	public function getOrders() {
+		return $this->orders;
+	}
+
+	/**
+	 * Sets the orders
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Order> $orders
+	 * @return void
+	 */
+	public function setOrders(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $orders) {
+		$this->orders = $orders;
+	}
+
+	/**
+	 * Returns the schedule
+	 *
+	 * @return \string $schedule
+	 */
+	public function getSchedule() {
+		return $this->schedule;
+	}
+	
+	/**
+	 * Sets the schedule
+	 *
+	 * @param \string $schedule
+	 * @return void
+	 */
+	public function setSchedule($schedule) {
+		$this->schedule = $schedule;
+	}
 }
 ?>

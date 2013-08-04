@@ -3,21 +3,17 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-14T23:46:34Z" product-name="t3sixshop">
 		<header/>
 		<body>
-
-			<trans-unit id="qty.description">
-				<source>qty</source>
-			</trans-unit>
-			<trans-unit id="rate.description">
-				<source>rate</source>
-			</trans-unit>
-			<trans-unit id="unit.description">
-				<source>unit</source>
-			</trans-unit>
 			<trans-unit id="amount.description">
 				<source>amount</source>
 			</trans-unit>
-			<trans-unit id="product.description">
-				<source>product</source>
+			<trans-unit id="status.description">
+				<source>status</source>
+			</trans-unit>
+			<trans-unit id="session.description">
+				<source>session</source>
+			</trans-unit>
+			<trans-unit id="cartitems.description">
+				<source>items</source>
 			</trans-unit>
 		</body>
 	</file>

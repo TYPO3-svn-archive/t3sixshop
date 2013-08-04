@@ -53,13 +53,13 @@ if (!defined('TYPO3_MODE')) {
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 	'Arm.' . $_EXTKEY,
-	'Basket',
+	'Cart',
 	array(
-		'Order' => 'list, basket, update, delete, form, confirm',
+		'Order' => 'list, cart, update, delete, form, confirm',
 	),
 	// non-cacheable actions
 	array(
-		'Order' => 'list, basket, update, delete, form, confirm',
+		'Order' => 'list, cart, update, delete, form, confirm',
 	)
 );
 

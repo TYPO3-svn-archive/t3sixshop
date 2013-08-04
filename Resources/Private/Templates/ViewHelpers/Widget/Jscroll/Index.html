@@ -1,9 +1,9 @@
 {namespace arm=Arm\T3sixshop\ViewHelpers}
 <f:renderChildren arguments="{content}" />
 <f:if condition="{nextBlock}">
-	<f:render section="jscroll" arguments="{pageUid:pageUid, nextBlock: nextBlock}" />
+	<f:render section="jscroll" arguments="{pageUid:pageUid, category:category, nextBlock: nextBlock}" />
 </f:if>
 
 <f:section name="jscroll">
-	<a href="{arm:widget.uri( arguments: '{id:pageUid, currentPage: nextBlock, type:99}')}" class="jscroll-next">Next</a> 
+	<a href="{arm:widget.uri( arguments: '{id:pageUid, category:category, currentPage: nextBlock, type:99}')}" class="jscroll-next">Next</a> 
 </f:section>

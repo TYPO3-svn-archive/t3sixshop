@@ -43,6 +43,7 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Widget\UriViewHelper {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$argumentPrefix = $this->controllerContext->getRequest()->getArgumentPrefix();
 		$arguments = $this->hasArgument('arguments') ? $this->arguments['arguments'] : array();
+		$pluginPrefix = substr($argumentPrefix, 0, strpos($argumentPrefix, '['));
 		
 		if ($this->hasArgument('action')) {
 			$arguments['action'] = $this->arguments['action'];
@@ -58,14 +59,36 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Widget\UriViewHelper {
 			$uriBuilder->setTargetPageUid($arguments['id']);
 			unset($arguments['id']);
 		}
+		
+		if ($arguments['category'] != '') {	
+			$plugin['category'] = $arguments['category'];
+			unset($arguments['category']);
+		}
+		
+		
+		$flagType = 0;
+		$dynamicArg = array();
+		
 		if ($arguments['type']!= '') {
+			$flagType = 1;
 			$this->arguments['type'] = $arguments['type'];
 			unset($arguments['type']);
-			$uri = $uriBuilder->setTargetPageType($this->arguments['type'])->setArguments(array($argumentPrefix => $arguments, 'type'=>$this->arguments['type']))->setSection($this->arguments['section'])->setAddQueryString(TRUE)->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix,'cHash'))->setFormat($this->arguments['format'])->build();
+			$dynamicArg['type'] = $this->arguments['type'];
+		}
+		
+		if (isset($plugin['category'])) {
+			$dynamicArg[$pluginPrefix] = $plugin;
+		}
+		
+		$dynamicArg[$argumentPrefix] = $arguments;
+		
+		if ($flagType == 1) {
+			$uri = $uriBuilder->setTargetPageType($this->arguments['type'])->setArguments($dynamicArg)->setSection($this->arguments['section'])->setAddQueryString(TRUE)->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix,'cHash'))->setFormat($this->arguments['format'])->build();
 		}
 		else {
-			$uri = $uriBuilder->setArguments(array($argumentPrefix => $arguments))->setSection($this->arguments['section'])->setAddQueryString(TRUE)->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix,'cHash'))->setFormat($this->arguments['format'])->build();
+			$uri = $uriBuilder->setArguments($dynamicArg)->setSection($this->arguments['section'])->setAddQueryString(TRUE)->setArgumentsToBeExcludedFromQueryString(array($argumentPrefix,'cHash'))->setFormat($this->arguments['format'])->build();
 		}
+
 		return str_replace('&', '&amp;', $uri);
 	}
     

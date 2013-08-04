@@ -32,7 +32,7 @@ namespace Arm\T3sixshop\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Cart extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * user
@@ -48,7 +48,7 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var \string
 	 */
 	protected $session;
-
+	
 	/**
 	 * fname
 	 *
@@ -69,41 +69,34 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var \string
 	 */
 	protected $email;
-
+	
 	/**
 	 * phone
 	 *
 	 * @var \string
 	 */
 	protected $phone;
-
+	
 	/**
 	 * apartment
 	 *
 	 * @var \string
 	 */
 	protected $apartment;
-
+	
 	/**
 	 * address
 	 *
 	 * @var \string
 	 */
 	protected $address;
-
+	
 	/**
 	 * zip
 	 *
 	 * @var \string
 	 */
 	protected $zip;
-	
-	/**
-	 * remark
-	 *
-	 * @var \string
-	 */
-	protected $remark;
 
 	/**
 	 * amount
@@ -112,14 +105,6 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @validate NotEmpty
 	 */
 	protected $amount;
-	
-	/**
-	 * totalamount
-	 *
-	 * @var \float
-	 * @validate NotEmpty
-	 */
-	protected $totalamount;
 
 	/**
 	 * status
@@ -128,26 +113,6 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @validate NotEmpty
 	 */
 	protected $status;
-
-	/**
-	 * discount
-	 *
-	 * @var \float
-	 */
-	protected $discount;
-	
-	
-	/**
-	 * 
-	 * @var \Arm\T3sixshop\Domain\Model\Coupon
-	 */
-	protected $coupon;
-	
-	/**
-	 *
-	 * @var \Arm\T3sixshop\Domain\Model\Deliveryoption
-	 */
-	protected $deliveryoption;
 	
 	/**
 	 * crdate
@@ -156,32 +121,18 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	protected $crdate;
 
-	/**
-	 * deliveryon
-	 *
-	 * @var \DateTime
-	 */
-	protected $deliveryon;
 
 	/**
-	 * orderid
+	 * cartitems
 	 *
-	 * @var \string
-	 * @validate NotEmpty
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Cartitem>
 	 */
-	protected $orderid;
-
-	/**
-	 * orderitems
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Orderitem>
-	 */
-	protected $orderitems;
+	protected $cartitems;
 
 	/**
 	 * __construct
 	 *
-	 * @return Order
+	 * @return Cart
 	 */
 	public function __construct() {
 		//Do not remove the next line: It would break the functionality
@@ -199,7 +150,7 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		 * It will be rewritten on each save in the extension builder
 		 * You may modify the constructor of this class instead
 		 */
-		$this->orderitems = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->cartitems = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
@@ -220,7 +171,26 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setUser($user) {
 		$this->user = $user;
 	}
-
+	
+	/**
+	 * Returns the session
+	 *
+	 * @return \string $session
+	 */
+	public function getSession() {
+		return $this->session;
+	}
+	
+	/**
+	 * Sets the session
+	 *
+	 * @param \string $session
+	 * @return void
+	 */
+	public function setSession($session) {
+		$this->session = $session;
+	}
+	
 	/**
 	 * Returns the email
 	 *
@@ -229,7 +199,7 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getEmail() {
 		return $this->email;
 	}
-
+	
 	/**
 	 * Sets the email
 	 *
@@ -279,25 +249,6 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 	
 	/**
-	 * Returns the session
-	 *
-	 * @return \string $session
-	 */
-	public function getSession() {
-		return $this->session;
-	}
-	
-	/**
-	 * Sets the session
-	 *
-	 * @param \string $session
-	 * @return void
-	 */
-	public function setSession($session) {
-		$this->session = $session;
-	}
-
-	/**
 	 * Returns the phone
 	 *
 	 * @return \string $phone
@@ -305,7 +256,7 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getPhone() {
 		return $this->phone;
 	}
-
+	
 	/**
 	 * Sets the phone
 	 *
@@ -315,7 +266,7 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setPhone($phone) {
 		$this->phone = $phone;
 	}
-
+	
 	/**
 	 * Returns the apartment
 	 *
@@ -324,7 +275,7 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getApartment() {
 		return $this->apartment;
 	}
-
+	
 	/**
 	 * Sets the apartment
 	 *
@@ -334,7 +285,7 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setApartment($apartment) {
 		$this->apartment = $apartment;
 	}
-
+	
 	/**
 	 * Returns the address
 	 *
@@ -343,7 +294,7 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getAddress() {
 		return $this->address;
 	}
-
+	
 	/**
 	 * Sets the address
 	 *
@@ -353,7 +304,7 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setAddress($address) {
 		$this->address = $address;
 	}
-
+	
 	/**
 	 * Returns the zip
 	 *
@@ -362,7 +313,7 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getZip() {
 		return $this->zip;
 	}
-
+	
 	/**
 	 * Sets the zip
 	 *
@@ -371,25 +322,6 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setZip($zip) {
 		$this->zip = $zip;
-	}
-	
-	/**
-	 * Returns the remark
-	 *
-	 * @return \string $remark
-	 */
-	public function getRemark() {
-		return $this->remark;
-	}
-	
-	/**
-	 * Sets the remark
-	 *
-	 * @param \string $remark
-	 * @return void
-	 */
-	public function setRemark($remark) {
-		$this->remark = $remark;
 	}
 
 	/**
@@ -411,24 +343,6 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->amount = $amount;
 	}
 	
-	/**
-	 * Returns the amount
-	 *
-	 * @return \float $amount
-	 */
-	public function getTotalamount() {
-		return $this->totalamount;
-	}
-	
-	/**
-	 * Sets the amount
-	 *
-	 * @param \float $amount
-	 * @return void
-	 */
-	public function setTotalamount($amount) {
-		$this->totalamount = $amount;
-	}
 
 	/**
 	 * Returns the status
@@ -450,44 +364,6 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Returns the discount
-	 *
-	 * @return \float $discount
-	 */
-	public function getDiscount() {
-		return $this->discount;
-	}
-
-	/**
-	 * Sets the discount
-	 *
-	 * @param \float $discount
-	 * @return void
-	 */
-	public function setDiscount($discount) {
-		$this->discount = $discount;
-	}
-
-	/**
-	 * Returns the deliveryon
-	 *
-	 * @return \DateTime $deliveryon
-	 */
-	public function getDeliveryon() {
-		return $this->deliveryon;
-	}
-
-	/**
-	 * Sets the deliveryon
-	 *
-	 * @param \DateTime $deliveryon
-	 * @return void
-	 */
-	public function setDeliveryon($deliveryon) {
-		$this->deliveryon = $deliveryon;
-	}
-
-	/**
 	 * Returns the crdate
 	 *
 	 * @return \DateTime $crdate
@@ -505,103 +381,44 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setCrdate($crdate) {
 		$this->crdate = $crdate;
 	}
-	
+
 	/**
-	 * Returns the orderid
+	 * Adds a Cartitem
 	 *
-	 * @return \string $orderid
+	 * @param \Arm\T3sixshop\Domain\Model\Cartitem $cartitem
+	 * @return void
 	 */
-	public function getOrderid() {
-		return strtoupper($this->orderid);
+	public function addCartitem(\Arm\T3sixshop\Domain\Model\Cartitem $cartitem) {
+		$this->cartitems->attach($cartitem);
 	}
 
 	/**
-	 * Sets the orderid
+	 * Removes a Cartitem
 	 *
-	 * @param \string $orderid
+	 * @param \Arm\T3sixshop\Domain\Model\Cartitem $cartitemToRemove The Cartitem to be removed
 	 * @return void
 	 */
-	public function setOrderid($orderid) {
-		$this->orderid = strtoupper($orderid);
+	public function removeCartitem(\Arm\T3sixshop\Domain\Model\Cartitem $cartitemToRemove) {
+		$this->cartitems->detach($cartitemToRemove);
 	}
 
 	/**
-	 * Adds a Orderitem
+	 * Returns the cartitems
 	 *
-	 * @param \Arm\T3sixshop\Domain\Model\Orderitem $orderitem
-	 * @return void
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Cartitem> $cartitems
 	 */
-	public function addOrderitem(\Arm\T3sixshop\Domain\Model\Orderitem $orderitem) {
-		$this->orderitems->attach($orderitem);
+	public function getCartitems() {
+		return $this->cartitems;
 	}
 
 	/**
-	 * Removes a Orderitem
+	 * Sets the cartitems
 	 *
-	 * @param \Arm\T3sixshop\Domain\Model\Orderitem $orderitemToRemove The Orderitem to be removed
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Cartitem> $cartitems
 	 * @return void
 	 */
-	public function removeOrderitem(\Arm\T3sixshop\Domain\Model\Orderitem $orderitemToRemove) {
-		$this->orderitems->detach($orderitemToRemove);
-	}
-
-	/**
-	 * Returns the orderitems
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Orderitem> $orderitems
-	 */
-	public function getOrderitems() {
-		return $this->orderitems;
-	}
-
-	/**
-	 * Sets the orderitems
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Arm\T3sixshop\Domain\Model\Orderitem> $orderitems
-	 * @return void
-	 */
-	public function setOrderitems(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $orderitems) {
-		$this->orderitems = $orderitems;
-	}
-	
-	
-	/**
-	 * Returns the coupon
-	 *
-	 * @return \Arm\T3sixshop\Domain\Model\Coupon $coupon
-	 */
-	public function getCoupon() {
-		return $this->coupon;
-	}
-	
-	/**
-	 * Sets the coupon
-	 *
-	 * @param \Arm\T3sixshop\Domain\Model\Coupon $coupon
-	 * @return void
-	 */
-	public function setCoupon(\Arm\T3sixshop\Domain\Model\Coupon $coupon) {
-		$this->coupon = $coupon;
-	}
-	
-	
-	/**
-	 * Returns the deliveryoption
-	 *
-	 * @return \Arm\T3sixshop\Domain\Model\Deliveryoption $deliveryoption
-	 */
-	public function getDeliveryoption() {
-		return $this->deliveryoption;
-	}
-	
-	/**
-	 * Sets the deliveryoption
-	 *
-	 * @param \Arm\T3sixshop\Domain\Model\Deliveryoption $deliveryoption
-	 * @return void
-	 */
-	public function setDeliveryoption(\Arm\T3sixshop\Domain\Model\Deliveryoption $deliveryoption) {
-		$this->deliveryoption = $deliveryoption;
+	public function setCartitems(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $cartitems) {
+		$this->cartitems = $cartitems;
 	}
 
 }

@@ -5,9 +5,9 @@
 <div class="alert">
 	<f:flashMessages />
 </div>
-<f:if condition="{orders}">
+<f:if condition="{cart}">
 	<f:then>
-		<f:if condition="{orderitems}">
+		<f:if condition="{cartitems}">
 			<f:then>
 				<table class="tx_t3sixshop_orders" >
 					<tr class="order-header">
@@ -19,15 +19,15 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 					</tr>
-					<f:for each="{orderitems}" as="item" iteration="row">
+					<f:for each="{cartitems}" as="item" iteration="row">
 						<tr>
 							<td class="right">{row.cycle}</td>
 							<td>{item.product.name}</td>
 							<td class="right">{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{item.rate}</f:format.number></td>
-							<td class="right">{item.qty} {item.product.unit}</td>
+							<td class="right">{item.qty} {item.unit}</td>
 							<td class="right">{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{item.amount}</f:format.number></td>
 							<td class="colbtn"><div class="buy"><f:link.action pageUid="{settings.singlePid}" pluginName="Show" controller="Product"  arguments="{product:item.product,quantity:item.qty}" class="button"><f:translate key="tx_t3sixshop_domain_model_orderitem.edit" /></f:link.action></div></td>
-							<td><div class="buy"><f:link.action action="delete" arguments="{orders:orders, product:item.product}" class="button"><f:translate key="tx_t3sixshop_domain_model_orderitem.delete" /></f:link.action></div></td>
+							<td><div class="buy"><f:link.action action="delete" arguments="{cart:cart, product:item.product}" class="button"><f:translate key="tx_t3sixshop_domain_model_orderitem.delete" /></f:link.action></div></td>
 						</tr>
 					</f:for>
 					<tr>
@@ -35,26 +35,26 @@
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td><f:translate key="tx_t3sixshop_domain_model_order.total" /></td>
-						<td class="right total">{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{orders.amount}</f:format.number></td>
+						<td class="right total">{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{cart.amount}</f:format.number></td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 					</tr>
-					<f:if condition="{0:orders.amount} >= {0:settings.minOrderAmt}">
+					<f:if condition="{0:cart.amount} >= {0:minordervalue}">
 						<f:then>
 							<tr>
 								<td colspan="7">&nbsp;</td>
 							</tr>
 							<tr>
 								<td>&nbsp;</td>
-								<td colspan="3" align="right"><div class="buy"><f:link.action pageUid="{settings.listPid}" class="button"><f:translate key="tx_t3sixshop_domain_model_order.continueshop" /></f:link.action></div></td>
-								<td colspan="2"><div class="buy"><f:link.action action="form" title="{orders.orderid}" arguments="{orders:orders}" class="button"><f:translate key="tx_t3sixshop_domain_model_order.checkout" /></f:link.action></div></td>
+								<td colspan="3" align="right"><div class="buy"><f:link.action pageUid="{settings.listPid}" pluginName="list" controller="Product" arguments="{category:category}" class="button"><f:translate key="tx_t3sixshop_domain_model_order.continueshop" /></f:link.action></div></td>
+								<td colspan="2"><div class="buy"><f:link.action action="form" title="Checkout" arguments="{cart:cart}" class="button"><f:translate key="tx_t3sixshop_domain_model_order.checkout" /></f:link.action></div></td>
 								<td></td>
 							</tr>
 						</f:then>
 						<f:else>
 							<tr>
-								<td colspan="5"><f:translate key="tx_t3sixshop_domain_model_order.minorder" />{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{settings.minOrderAmt}</f:format.number></td>
-								<td colspan="2" align="right"><div class="buy"><f:link.action pageUid="{settings.listPid}" class="button"><f:translate key="tx_t3sixshop_domain_model_order.continueshop" /></f:link.action></div></td>
+								<td colspan="5"><f:translate key="tx_t3sixshop_domain_model_order.minorder" />{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{minordervalue}</f:format.number></td>
+								<td colspan="2" align="right"><div class="buy"><f:link.action pageUid="{settings.listPid}" pluginName="list" controller="Product" arguments="{category:category}" class="button"><f:translate key="tx_t3sixshop_domain_model_order.continueshop" /></f:link.action></div></td>
 							</tr>
 						</f:else>
 					</f:if>

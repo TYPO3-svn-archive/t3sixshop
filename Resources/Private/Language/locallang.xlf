@@ -13,6 +13,9 @@
 			<trans-unit id="tx_t3sixshop_domain_model_category.products">
 				<source>products</source>
 			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_category.deliverytime">
+				<source>Order delivery</source>
+			</trans-unit>
 			
 			<trans-unit id="tx_t3sixshop_domain_model_product">
 				<source>Shop product</source>
@@ -40,6 +43,9 @@
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_product.outofstock">
 				<source>Out of stock</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.related">
+				<source>Related Products</source>
 			</trans-unit>
 			
 			<trans-unit id="tx_t3sixshop_domain_model_product.btn_buy">
@@ -106,7 +112,7 @@
 				<source>Order items</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.noorder">
-				<source>No product in your basket!</source>
+				<source>No product in your cart!</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.total">
 				<source>TOTAL</source>
@@ -124,7 +130,7 @@
 				<source>Confirm</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.cart">
-				<source>Basket</source>
+				<source>Cart</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.createlogin">
 				<source>Create my login details</source>
@@ -133,7 +139,7 @@
 				<source>To place order, amount should be greater or equal to </source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.noitem">
-				<source>Your basket is empty!</source>
+				<source>Your cart is empty!</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.session_expired">
 				<source>Sorry! Your session has expired because of no activity.</source>
@@ -212,10 +218,10 @@
 				<source>Product</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_orderitem.product_added">
-				<source>Product added to basket.</source>
+				<source>Product added to cart.</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_orderitem.product_remove">
-				<source>Product removed from basket!</source>
+				<source>Product removed from cart!</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_orderitem.product_updated">
 				<source>Product quantity updated.</source>

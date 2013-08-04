@@ -8,40 +8,26 @@ plugin.tx_t3sixshop {
 		layoutRootPath = EXT:t3sixshop/Resources/Private/Layouts/
 		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to ext CSS (FE)
 		mainCss = EXT:t3sixshop/Resources/Public/Css/t3sixshop.css
-		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to zoom CSS (FE)
-		zoomCss = EXT:t3sixshop/Resources/Public/Css/jquery.jqzoom.css
-		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to lazyload jQuery (FE)
-		lazyJs = EXT:t3sixshop/Resources/Public/Js/jquery.lazyload.min.js
-		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to jScroll jQuery (FE)
-		scrollJs = EXT:t3sixshop/Resources/Public/Js/jquery.jscroll.min.js
-		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to jqZoom jQuery (FE)
-		zoomJs = EXT:t3sixshop/Resources/Public/Js/jquery.jqzoom-core.js
 		# cat=plugin.tx_t3sixshop/file; type=string; label=Path to jqZoom jQuery (FE)
 		validJs = EXT:t3sixshop/Resources/Public/Js/jquery.validate.pack.js	
 	}
 	persistence {
 		# cat=plugin.tx_t3sixshop//a; type=string; label=Default storage PID
-		storagePid = 16
+		storagePid = 11
 	}
 	settings {
 		# cat=plugin.tx_t3sixshop//a; type=string; label=Details PID
-		singlePid = 17
+		singlePid = 12
 		# cat=plugin.tx_t3sixshop//a; type=string; label=Category UID
 		category = 
 		# cat=plugin.tx_t3sixshop//a; type=string; label=Product List PID
 		listPid = 3
 		# cat=plugin.tx_t3sixshop//a; type=string; label=Cart PID
 		cartPid = 4
-		# cat=plugin.tx_t3sixshop//a; type=string; label=Enable jQuery Lazy loading
-		lazyLoad = 1
-		# cat=plugin.tx_t3sixshop//a; type=string; label=Enable jQuery jScroll instead of paging
-		jScroll = 1
-		# cat=plugin.tx_t3sixshop//a; type=string; label=jScroll ajax request PID
-		jScrollPid = 26
 		# cat=plugin.tx_t3sixshop//a; type=string; label= Shop currency
 		currency = Rs.
 		# cat=plugin.tx_t3sixshop//a; type=string; label= Order ID prefix
-		orderPrefix = NHD
+		orderPrefix = TP
 		# cat=plugin.tx_t3sixshop//a; type=string; label= Order email
 		orderEmail = order@newtownhomedelivery.com
 		# cat=plugin.tx_t3sixshop//a; type=string; label= Order email name

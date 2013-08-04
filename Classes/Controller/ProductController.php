@@ -41,6 +41,19 @@ class ProductController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 * @inject
 	 */
 	protected $productRepository;
+	
+	/**
+	 * 
+	 * @var \ARM\T3sixshop\Domain\Repository\CategoryRepository
+	 * @inject
+	 */
+	protected $categoryRepository;
+	
+	/**
+	 * 
+	 * @var \ARM\T3sixshop\Domain\Model\Category
+	 */
+	protected $category;
 
 	/**
 	 * action list
@@ -48,11 +61,28 @@ class ProductController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 * @return void
 	 */
 	public function listAction() {
+		
+		//set the category
+		if (isset($this->settings['category'])) {
+			$catUid = intval($this->settings['category']);
+		}
+		
+		//For jScroll
+		if ($this->request->hasArgument('category')) {
+			$catUid = intval($this->request->getArgument('category'));
+		}
+		if($catUid > 0) {
+			$this->category = $this->categoryRepository->findByUid($catUid);
+		}
+		
 
+		/*
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type') == 99) {
 			//This is ajax request for jScroll, redirect to jscroll
 			$this->forward('jscroll');
 		}
+		*/
+		
 		if ($this->settings['feature'] == 1) {
 			$products = $this->productRepository->findByFeatured($this->settings['feature_limit']);
 		}
@@ -63,9 +93,15 @@ class ProductController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 				$linkJs = '<script type="text/javascript" src="' . htmlspecialchars($armJsFile) . '"></script>';
 				$this->response->addAdditionalHeaderData($linkJs);
 			}
-			
-			$products = $this->productRepository->findAll();
+			if (($this->category instanceof \ARM\T3sixshop\Domain\Model\Category) && isset($this->category)) {
+				$products = $this->productRepository->findByCategory($this->category);
+			}
+			else {
+				$products = $this->productRepository->findAll();
+			}
 		}
+		
+		$this->view->assign('category', $catUid);
 		$this->view->assign('products', $products);
 	}
 
@@ -73,7 +109,28 @@ class ProductController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 * AJAX action
 	 */
 	public function jscrollAction() {
-		$products = $this->productRepository->findAll();
+		//set the category
+		if (isset($this->settings['category'])) {
+			$catUid = intval($this->settings['category']);
+			
+		}
+		
+		//For jScroll
+		if ($this->request->hasArgument('category')) {
+			$catUid = intval($this->request->getArgument('category'));
+		}
+		
+		if($catUid > 0) {
+			$this->category = $this->categoryRepository->findByUid($catUid);
+		}
+		
+		if (($this->category instanceof \ARM\T3sixshop\Domain\Model\Category) && isset($this->category)) {
+			$products = $this->productRepository->findByCategory($this->category);
+		}
+		else {
+			$products = $this->productRepository->findAll();
+		}
+		$this->view->assign('category', $catUid);
 		$this->view->assign('products', $products);
 	}
 	
@@ -101,13 +158,6 @@ class ProductController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 				';
 		$this->response->addAdditionalHeaderData($linkVal);
 		
-		//Check if jqzoom enabled
-		if ($this->settings['detail']['zoom'] == 1) {
-			//Add the thumbnail controller
-			$zoomArmFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('t3sixshop') . 'Resources/Public/Js/jquery.armjqhandler.js';
-			$linkArmZoom = '<script type="text/javascript" src="' . htmlspecialchars($zoomArmFile) . '"></script>';
-			$this->response->addAdditionalHeaderData($linkArmZoom);
-		}
 		if ($this->request->hasArgument('quantity')) {
 			$qty = (integer) $this->request->getArgument('quantity');
 			$this->view->assign('qty', $qty);

@@ -50,6 +50,12 @@ class JscrollController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetContr
 	protected $jScrollPid;
 	
 	/**
+	 * 
+	 * @var \integer
+	 */
+	protected $category;
+	
+	/**
 	 * @var \integer
 	 */
 	protected $currentPage = 1;
@@ -65,6 +71,7 @@ class JscrollController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetContr
 	 */
 	public function initializeAction() {
 		$this->objects = $this->widgetConfiguration['objects'];
+		$this->category = (integer)$this->widgetConfiguration['category'];
 		$this->jScrollPid = (integer)$this->widgetConfiguration['jScrollPid'];
 		$this->itemScroll = (integer)$this->widgetConfiguration['itemScroll'];
 		$this->totalPages = ceil(count($this->objects) / $this->itemScroll);
@@ -103,6 +110,8 @@ class JscrollController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetContr
 		$this->view->assign('content', array(
 			$this->widgetConfiguration['as'] => $modifiedObjects
 		));
+		
+		$this->view->assign('category', $this->category);
 		$this->view->assign('pageUid', $this->jScrollPid);
 		$this->view->assign('nextBlock', $this->nextBlock());
 	}

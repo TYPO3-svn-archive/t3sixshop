@@ -51,11 +51,12 @@ class JscrollViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewH
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects
      * @param \string $as
+     * @param \integer $category
      * @param \integer $jScrollPid
      * @param \integer $itemScroll
      * @return string
      */
-    public function render(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects, $as, $jScrollPid, $itemScroll) {
+    public function render(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects, $as, $category, $jScrollPid, $itemScroll) {
     	return $this->initiateSubRequest();
     }
     

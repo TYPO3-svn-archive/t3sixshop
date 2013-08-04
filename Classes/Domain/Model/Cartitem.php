@@ -32,7 +32,7 @@ namespace Arm\T3sixshop\Domain\Model;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class Orderitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Cartitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * qty
@@ -41,13 +41,6 @@ class Orderitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @validate NotEmpty
 	 */
 	protected $qty;
-	
-	/**
-	 * newqty
-	 *
-	 * @var \float
-	 */
-	protected $newqty;
 
 	/**
 	 * rate
@@ -65,21 +58,6 @@ class Orderitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	protected $amount;
 	
-	
-	/**
-	 * newamount
-	 *
-	 * @var \float
-	 */
-	protected $newamount;
-	
-	/**
-	 * status
-	 *
-	 * @var \integer
-	 * @validate NotEmpty
-	 */
-	protected $status;
 
 	/**
 	 * product
@@ -102,19 +80,13 @@ class Orderitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	protected $unit;
 	
-	/**
-	 * remark
-	 *
-	 * @var \string
-	 */
-	protected $remark;
 	
 	/**
-	 * orders
+	 * cart
 	 *
-	 * @var \Arm\T3sixshop\Domain\Model\Order
+	 * @var \Arm\T3sixshop\Domain\Model\Cart
 	 */
-	protected $orders;
+	protected $cart;
 
 
 	/**
@@ -136,25 +108,6 @@ class Orderitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->qty = $qty;
 	}
 
-	/**
-	 * Returns the qty
-	 *
-	 * @return \float $qty
-	 */
-	public function getNewqty() {
-		return $this->newqty;
-	}
-	
-	/**
-	 * Sets the qty
-	 *
-	 * @param \float $qty
-	 * @return void
-	 */
-	public function setNewqty($qty) {
-		$this->newqty = $qty;
-	}
-	
 	/**
 	 * Returns the rate
 	 *
@@ -191,25 +144,6 @@ class Orderitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setAmount($amount) {
 		$this->amount = $amount;
-	}
-	
-	/**
-	 * Returns the amount
-	 *
-	 * @return \float $amount
-	 */
-	public function getNewamount() {
-		return $this->newamount;
-	}
-	
-	/**
-	 * Sets the amount
-	 *
-	 * @param \float $amount
-	 * @return void
-	 */
-	public function setNewamount($amount) {
-		$this->newamount = $amount;
 	}
 
 
@@ -269,62 +203,24 @@ class Orderitem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setUnit($unit) {
 		$this->unit = $unit;
 	}
-	
-	/**
-	 * Returns the remark
-	 *
-	 * @return \string $remark
-	 */
-	public function getRemark() {
-		return $this->remark;
-	}
-	
-	/**
-	 * Sets the remark
-	 *
-	 * @param \string $remark
-	 * @return void
-	 */
-	public function setRemark($remark) {
-		$this->remark = $remark;
-	}
-	
-	/**
-	 * Returns the status
-	 *
-	 * @return \integer $status
-	 */
-	public function getStatus() {
-		return $this->status;
-	}
-	
-	/**
-	 * Sets the status
-	 *
-	 * @param \integer $status
-	 * @return void
-	 */
-	public function setStatus($status) {
-		$this->status = $status;
-	}
 
 	/**
-	 * Returns the orders
+	 * Returns the cart
 	 *
-	 * @return \Arm\T3sixshop\Domain\Model\Order  $orders
+	 * @return \Arm\T3sixshop\Domain\Model\Cart  $cart
 	 */
-	public function getOrders() {
-		return $this->orders;
+	public function getCart() {
+		return $this->cart;
 	}
 	
 	/**
-	 * Sets the orders
+	 * Sets the cart
 	 *
-	 * @param \Arm\T3sixshop\Domain\Model\Order  $orders
+	 * @param \Arm\T3sixshop\Domain\Model\Cart  $cart
 	 * @return void
 	 */
-	public function setOrders(\Arm\T3sixshop\Domain\Model\Order  $orders) {
-		$this->orders = $orders;
+	public function setCart(\Arm\T3sixshop\Domain\Model\Cart  $cart) {
+		$this->cart = $cart;
 	}
 }
 ?>

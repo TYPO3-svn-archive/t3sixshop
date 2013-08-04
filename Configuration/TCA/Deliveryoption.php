@@ -3,13 +3,13 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$TCA['tx_t3sixshop_domain_model_pgroup'] = array(
-	'ctrl' => $TCA['tx_t3sixshop_domain_model_pgroup']['ctrl'],
+$TCA['tx_t3sixshop_domain_model_deliveryoption'] = array(
+	'ctrl' => $TCA['tx_t3sixshop_domain_model_deliveryoption']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, price, products',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, price, freeprice, schedule, orders',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, price, products,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, name, price, freeprice, schedule, orders,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -37,8 +37,8 @@ $TCA['tx_t3sixshop_domain_model_pgroup'] = array(
 				'items' => array(
 					array('', 0),
 				),
-				'foreign_table' => 'tx_t3sixshop_domain_model_pgroup',
-				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_pgroup.pid=###CURRENT_PID### AND tx_t3sixshop_domain_model_pgroup.sys_language_uid IN (-1,0)',
+				'foreign_table' => 'tx_t3sixshop_domain_model_deliveryoption',
+				'foreign_table_where' => 'AND tx_t3sixshop_domain_model_deliveryoption.pid=###CURRENT_PID### AND tx_t3sixshop_domain_model_deliveryoption.sys_language_uid IN (-1,0)',
 			),
 		),
 		'l10n_diffsource' => array(
@@ -95,36 +95,54 @@ $TCA['tx_t3sixshop_domain_model_pgroup'] = array(
 		),
 		'name' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_pgroup.name',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_deliveryoption.name',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,
-				'eval' => 'trim,required'
+				'eval' => 'trim,required',
 			),
 		),
 		'price' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_pgroup.price',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_deliveryoption.price',
 			'config' => array(
-					'type' => 'input',
-					'size' => 10,
-					'eval' => 'required,double2'
+				'type' => 'input',
+				'size' => 10,
+				'eval' => 'double2',
 			),
 		),
-		'products' => array(
+		'freeprice' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_pgroup.products',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_deliveryoption.freeprice',
+			'config' => array(
+				'type' => 'input',
+				'size' => 10,
+				'eval' => 'double2',
+			),
+		),
+		'schedule' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_deliveryoption.schedule',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim',
+			),
+		),
+		'orders' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_deliveryoption.orders',
 			'config' => array(
 				'type' => 'inline',
-				'foreign_table' => 'tx_t3sixshop_domain_model_product',
-				'foreign_field' => 'pgroup',
+				'foreign_table' => 'tx_t3sixshop_domain_model_order',
+				'foreign_field' => 'coupon',
 				'maxitems'      => 9999,
 				'appearance' => array(
 					'collapseAll' => 0,
 					'levelLinksPosition' => 'top',
 					'showSynchronizationLink' => 1,
 					'showPossibleLocalizationRecords' => 1,
-					'showAllLocalizationLink' => 1
+					'showAllLocalizationLink' => 1,
 				),
 			),
 		),

@@ -1,6 +1,6 @@
 {namespace arm=Arm\T3sixshop\ViewHelpers}
 <f:if condition="{products}">
-	<arm:widget.jscroll objects="{products}" as="paginatedProduct" jScrollPid="{settings.jScrollPid}" itemScroll="{settings.list.perpage}">
+	<arm:widget.jscroll objects="{products}" as="paginatedProduct" category="{category}" jScrollPid="{settings.jScrollPid}" itemScroll="{settings.list.perpage}">
 		<f:for each="{paginatedProduct}" as="product">
 			<div class="item clearfix"><f:render partial="Product/List" arguments="{product:product, settings:settings}" /></div>
 		</f:for>

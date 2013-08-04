@@ -15,6 +15,12 @@
             						<foreign_table>tx_t3sixshop_domain_model_category</foreign_table>
             						<foreign_table_where>AND tx_t3sixshop_domain_model_category.sys_language_uid IN (-1,0) ORDER BY tx_t3sixshop_domain_model_category.name</foreign_table_where>
             						<size>1</size>
+            						<items>
+              							<numIndex index="0" type="array">
+              								<numIndex index="0">All</numIndex>
+              								<numIndex index="1">All</numIndex>
+              							</numIndex>
+              						</items>
             						<maxitems>1</maxitems>
             						<minitems>0</minitems>
             				</config>

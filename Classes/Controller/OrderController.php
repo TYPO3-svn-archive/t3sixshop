@@ -34,6 +34,17 @@ namespace Arm\T3sixshop\Controller;
  */
 class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 	
+	const intNextDay = 1;
+	
+	const intWeek = 2;
+	
+	/**
+	 *
+	 * @var \ARM\T3sixshop\Domain\Repository\CategoryRepository
+	 * @inject
+	 */
+	protected $categoryRepository;
+	
 	/**
 	 * productRepository
 	 *
@@ -41,6 +52,22 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @inject
 	 */
 	protected $productRepository;
+	
+	/**
+	 * cartRepository
+	 *
+	 * @var \ARM\T3sixshop\Domain\Repository\CartRepository
+	 * @inject
+	 */
+	protected $cartRepository;
+	
+	/**
+	 * cartitemRepository
+	 *
+	 * @var \ARM\T3sixshop\Domain\Repository\CartitemRepository
+	 * @inject
+	 */
+	protected $cartitemRepository;
 	
 	/**
 	 * orderRepository
@@ -67,37 +94,43 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	protected $customerRepository;
 	
 	/**
+	 * 
+	 * @var \float
+	 */
+	private $minOrderValue;
+	
+	/**
 	 * This action is called every time any action is called
 	 */
 	public function initializeAction() {
+		
 		session_start();
 		
 		//Check whether logged in user and update the order
-		$orderId = $GLOBALS["TSFE"]->fe_user->getKey("ses", "order");
-
+		$cartId = $GLOBALS["TSFE"]->fe_user->getKey("ses", "cart");
+		$this->minOrderValue = $this->settings['minOrderAmt'];
 		
-		if ($GLOBALS['TSFE']->fe_user->user['uid'] != '' && $orderId != '') {
+		if ($GLOBALS['TSFE']->fe_user->user['uid'] != '' && $cartId != '') {
 			
-			$orders = $this->orderRepository->findByUid(intval($orderId));
+			$cart = $this->cartRepository->findByUid(intval($cartId));
 			
-			if ($orders instanceof \Arm\T3sixshop\Domain\Model\Order) {
+			if ($cart instanceof \Arm\T3sixshop\Domain\Model\Cart) {
 				
-				if ($orders->getFname() == '' || $orders->getAddress() == '' || $orders->getPhone()=='') {
+				if ($cart->getFname() == '' || $cart->getAddress() == '' || $cart->getPhone()=='') {
 				
-					$orders->setUser($GLOBALS['TSFE']->fe_user->user['uid']);
-					$orders->setFname($GLOBALS['TSFE']->fe_user->user['first_name']);
-					$orders->setLname($GLOBALS['TSFE']->fe_user->user['last_name']);
-					$orders->setEmail($GLOBALS['TSFE']->fe_user->user['email']);
-					$orders->setApartment($GLOBALS['TSFE']->fe_user->user['apartment']);
-					$orders->setAddress($GLOBALS['TSFE']->fe_user->user['address']);
-					$orders->setPhone($GLOBALS['TSFE']->fe_user->user['telephone']);
-					$orders->setZip($GLOBALS['TSFE']->fe_user->user['zip']);
+					$cart->setUser($GLOBALS['TSFE']->fe_user->user['uid']);
+					$cart->setFname($GLOBALS['TSFE']->fe_user->user['first_name']);
+					$cart->setLname($GLOBALS['TSFE']->fe_user->user['last_name']);
+					$cart->setEmail($GLOBALS['TSFE']->fe_user->user['email']);
+					$cart->setApartment($GLOBALS['TSFE']->fe_user->user['apartment']);
+					$cart->setAddress($GLOBALS['TSFE']->fe_user->user['address']);
+					$cart->setPhone($GLOBALS['TSFE']->fe_user->user['telephone']);
+					$cart->setZip($GLOBALS['TSFE']->fe_user->user['zip']);
 					
-					$this->orderRepository->update($orders);
+					$this->cartRepository->update($cart);
 				} 
 			}	
 		}
-		
 	}
 	
 	/**
@@ -146,10 +179,10 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	/**
 	 * Confirm form
 	 * 
-	 * @param \Arm\T3sixshop\Domain\Model\Order $orders
+	 * @param \Arm\T3sixshop\Domain\Model\Cart $cart
 	 * @validate
 	 */
-	public function confirmAction(\Arm\T3sixshop\Domain\Model\Order $orders) {
+	public function confirmAction(\Arm\T3sixshop\Domain\Model\Cart $cart) {
 		
 		if ($this->request->hasArgument('loginBtn')) {
 			
@@ -178,26 +211,26 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				
 				$GLOBALS['TSFE']->fe_user->createUserSession($user);
 				//Set the information in the orders
-				$orders->setUser($user['uid']);
-				$orders->setFname($user['first_name']);
-				$orders->setLname($user['last_name']);
-				$orders->setEmail($user['email']);
-				$orders->setApartment($user['apartment']);
-				$orders->setAddress($user['address']);
-				$orders->setPhone($user['telephone']);
-				$orders->setZip($user['zip']);
+				$cart->setUser($user['uid']);
+				$cart->setFname($user['first_name']);
+				$cart->setLname($user['last_name']);
+				$cart->setEmail($user['email']);
+				$cart->setApartment($user['apartment']);
+				$cart->setAddress($user['address']);
+				$cart->setPhone($user['telephone']);
+				$cart->setZip($user['zip']);
 				
-				$this->processOrder($orders);
+				$this->processOrder($cart);
 			}
 			else {
 				$this->flashMessageContainer->flush();
 				$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_customer.login_failed','t3sixshop'));
-				$this->redirect("form","Order","t3sixshop",array('orders' => $orders));
+				$this->redirect("form","Order","t3sixshop",array('cart' => $cart));
 			}
 		}
 		else {
 			
-			$this->processOrder($orders);
+			$this->processOrder($cart);
 			
 			if ($GLOBALS['TSFE']->fe_user->user['uid'] == '') {
 				
@@ -208,13 +241,13 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 					$arguments = array(
 							'FE' => array(
 									'fe_users' => array(
-												'first_name' => $orders->getFname(),
-												'last_name' => $orders->getLname(),
-												'email' => $orders->getEmail(),
-												'address' => $orders->getAddress(),
-												'telephone' => $orders->getPhone(),
-												'zip' => $orders->getZip(),
-												'apartment' => $orders->getApartment()
+												'first_name' => $cart->getFname(),
+												'last_name' => $cart->getLname(),
+												'email' => $cart->getEmail(),
+												'address' => $cart->getAddress(),
+												'telephone' => $cart->getPhone(),
+												'zip' => $cart->getZip(),
+												'apartment' => $cart->getApartment()
 											)
 									)
 							);
@@ -230,79 +263,214 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	
 	/**
 	 * 
-	 * @param \Arm\T3sixshop\Domain\Model\Order $orders
+	 * @param \Arm\T3sixshop\Domain\Model\Cart $cart
 	 */
-	protected function processOrder(\Arm\T3sixshop\Domain\Model\Order $orders) {
+	protected function processOrder(\Arm\T3sixshop\Domain\Model\Cart $cart) {
 		//Store the order
-		$orders->setStatus(1);
-		//Set the totalamount
-		$orders->setTotalamount($orders->getAmount());
-		$this->orderRepository->update($orders);
+		$cart->setStatus(1);
+		$this->cartRepository->update($cart);
 		
-		//update the user repository
-		if ($GLOBALS['TSFE']->fe_user->user['uid']) {
-			//Create the customer
-			$customer = $this->customerRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
+		//Now new logic to create order and also separate order based on separate invoice
+		$categories = array();
+		
+		$itemNormal = array();
+		
+		//Get the items from cart
+		$cartItems = $cart->getCartitems();
+		
+		foreach ($cartItems as $item) {
 			
-			if ($customer instanceof \Arm\T3sixshop\Domain\Model\Customer) {
-				$customer->addOrder($orders);
-				$this->customerRepository->update($customer);
+			$itemcat = $item->getProduct()->getCategory();
+			$itemcatUid = $itemcat->getUid();
+			
+			if($itemcat->getSeparatebill() == TRUE) {
+				$categories["$itemcatUid"][] = $item;
+			}
+			else {
+				$itemNormal[] =  $item;
+			}
+			
+		}
+		
+		if (count($itemNormal) > 0) {
+			$this->createOrder($cart,$itemNormal);
+		}
+		
+		if (count($categories) > 0) {
+			
+			foreach ($categories as $catUid=>$catitems) {
+				
+				$catObj = $this->categoryRepository->findByUid($catUid);
+				
+				if ($catObj->getDelivertime() == self::intNextDay) {
+					$this->createOrder($cart,$catitems, TRUE, FALSE);
+				}
+				elseif ($catObj->getDelivertime() == self::intWeek) {
+					$this->createOrder($cart,$catitems, FALSE, TRUE);
+				}
+				else {
+					$this->createOrder($cart,$catitems);
+				}
 			}
 		}
 		
-		//Create the PDF
-		$pdf = $this->generatePdf($orders);
-
-		//Email template
-		$template = 'Order';
-		
-		//Email sender
-		$sender = array(
-			$this->settings['senderEmail'] => $this->settings['senderEmailName']
-		);
-		//Email recipient
-		$recipient = array(
-			$this->settings['orderEmail'] => $this->settings['orderEmailName']
-		);
-		//CC email to user
-		$cc = array(
-			$orders->getEmail() => $orders->getFname().' '.$orders->getLname()
-		);
-			
-		$subject = 'Order ['. $orders->getOrderid().'] placed at newtownhomedelivery.com';
-			
-			
-			
-		$emailArr['fname'] = $orders->getFname();
-		$emailArr['lname'] = $orders->getLname();
-		$emailArr['email'] = $orders->getEmail();
-		$emailArr['phone'] = $orders->getPhone();
-		$emailArr['address'] = $orders->getAddress();
-		$emailArr['zip'] = $orders->getZip();
-		$emailArr['apartment'] = $orders->getApartment();
-		$emailArr['orderid'] = $orders->getOrderid();
-		$emailArr['amount'] = sprintf("%.02f", $orders->getAmount());
-		
-		//Send Email
-		if(!$this->sendTemplateEmail($recipient, $sender, $subject, $template, $cc, $emailArr, $pdf, 'order-'.$orders->getUid().'.pdf')) {
-			die('Failed to send order email!');
-		}
 		//destroy the session
 		$GLOBALS["TSFE"]->fe_user->setKey("ses", "session_id", NULL);
-		$GLOBALS["TSFE"]->fe_user->setKey("ses","order", NULL);
+		$GLOBALS["TSFE"]->fe_user->setKey("ses","cart", NULL);
 		$GLOBALS["TSFE"]->fe_user->sesData_change = true;
 		$GLOBALS["TSFE"]->fe_user->storeSessionData();
 	}
 	
 	/**
+	 * 
+	 * @param \Arm\T3sixshop\Domain\Model\Cart $cart
+	 * @param \array $items
+	 * @param \boolean $nextDay
+	 * @param \boolean $weekEnd
+	 */
+	private function createOrder($cart, $items, $nextDay = FALSE, $weekEnd = FALSE) {
+		
+		//Create persistence manager
+		$persistanceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+		
+		//create the order object
+		$order =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Arm\\T3sixshop\\Domain\\Model\\Order');
+		$order->setUser($cart->getUser());
+		$order->setSession($cart->getSession());
+		$order->setFname($cart->getFname());
+		$order->setLname($cart->getLname());
+		$order->setEmail($cart->getEmail());
+		$order->setApartment($cart->getApartment());
+		$order->setAddress($cart->getAddress());
+		$order->setPhone($cart->getPhone());
+		$order->setZip($cart->getZip());
+		$order->setStatus(1);
+		
+		$this->orderRepository->add($order);
+		//this will immediately save to DB and uid will be generated
+		$persistanceManager->persistAll();
+		//get the uid
+		$orderId = $order->getUid();
+		$genId = $this->generateOrderid($orderId);
+		$order->setOrderid($genId);
+		
+		$orderAmount = 0;
+		
+		//Create the items
+		foreach ($items as $item) {
+			
+			$orderitem =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Arm\\T3sixshop\\Domain\\Model\\Orderitem');
+			$orderitem->setProduct($item->getProduct());
+			$orderitem->setName($item->getName());
+			$orderitem->setQty($item->getQty());
+			$orderitem->setRate($item->getRate());
+			$orderitem->setAmount($item->getAmount());
+			$orderitem->setUnit($item->getUnit());
+			$orderitem->setOrders($order);
+			$this->orderitemRepository->add($orderitem);
+			
+			//update for orders
+			$orderAmount += $item->getAmount();
+			$order->addOrderitem($orderitem);
+			$persistanceManager->persistAll();
+		}
+		
+		$order->setAmount($orderAmount);
+		//Set the totalamount
+		$order->setTotalamount($orderAmount);
+		
+		//update the user repository
+		if ($GLOBALS['TSFE']->fe_user->user['uid']) {
+			//Create the customer
+			$customer = $this->customerRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
+			if ($customer instanceof \Arm\T3sixshop\Domain\Model\Customer) {
+				$customer->addOrder($order);
+				$this->customerRepository->update($customer);
+			}
+		}
+		
+		$this->orderRepository->update($order);
+		$persistanceManager->persistAll();
+		
+		//Create the PDF
+		$pdf = $this->generatePdf($order);
+		
+		//Email template
+		$template = 'Order';
+		
+		//Email sender
+		$sender = array(
+				$this->settings['senderEmail'] => $this->settings['senderEmailName']
+		);
+		//Email recipient
+		$recipient = array(
+				$this->settings['orderEmail'] => $this->settings['orderEmailName']
+		);
+		//CC email to user
+		$cc = array(
+				$order->getEmail() => $order->getFname().' '.$order->getLname()
+		);
+			
+		$subject = 'Order ['. $order->getOrderid().'] placed at newtownhomedelivery.com';
+			
+
+		$emailArr['fname'] = $order->getFname();
+		$emailArr['lname'] = $order->getLname();
+		$emailArr['email'] = $order->getEmail();
+		$emailArr['phone'] = $order->getPhone();
+		$emailArr['address'] = $order->getAddress();
+		$emailArr['zip'] = $order->getZip();
+		$emailArr['apartment'] = $order->getApartment();
+		$emailArr['orderid'] = $order->getOrderid();
+		$emailArr['amount'] = sprintf("%.02f", $order->getAmount());
+		
+		if ($nextDay) {
+			$emailArr['expectedDate'] =  $this->getDeliveryDate('N');
+		}
+		elseif ($weekEnd) {
+			//get the expected delivery date
+			$emailArr['expectedDate'] =  $this->getDeliveryDate('W');
+		}
+		
+		
+		//Send Email
+		if(!$this->sendTemplateEmail($recipient, $sender, $subject, $template, $cc, $emailArr, $pdf, 'order-'.$order->getUid().'.pdf')) {
+			die('Failed to send order email!');
+		}
+	}
+	
+	/**
+	 * Get the expected delivery date
+	 * 
+	 * @param \string
+	 * @return \string
+	 */
+	private function getDeliveryDate($mode='W') {
+		
+		if ($mode == 'W') {
+			$today = date('w');
+			if ($today == 6) {
+				return date("j-m-Y", strtotime("+1 day"));
+			}
+			else{
+				return date("j-m-Y", strtotime("next Saturday"));
+			}
+		}
+		
+		if($mode == 'N') {
+			return date("j-m-Y", strtotime("+1 day"));
+		}
+	}
+	
+	/**
 	 * Checkout form
 	 * 
-	 * @param \Arm\T3sixshop\Domain\Model\Order $orders
+	 * @param \Arm\T3sixshop\Domain\Model\Cart $cart
 	 * @validate
 	 */
-	public function formAction(\Arm\T3sixshop\Domain\Model\Order $orders) {
+	public function formAction(\Arm\T3sixshop\Domain\Model\Cart $cart) {
 		
-		if ($orders->getAmount() >= (integer) $this->settings['minOrderAmt']) {
+		if ($cart->getAmount() >= (integer) $this->settings['minOrderAmt']) {
 			//Add validate js file
 			$valFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('t3sixshop') . 'Resources/Public/Js/jquery.validate.pack.js';
 			$linkVal = '<script type="text/javascript" src="' . htmlspecialchars($valFile) . '"></script>
@@ -322,7 +490,7 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 					$this->view->assign('user', $user);
 				}
 			}
-			$this->view->assign('orders', $orders);
+			$this->view->assign('cart', $cart);
 		}
 		else {
 			$this->redirect("list");
@@ -337,23 +505,40 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	public function listAction() {
 		
 		$session_id = $GLOBALS["TSFE"]->fe_user->getKey("ses", "session_id");
-		$orderId = (integer)$GLOBALS["TSFE"]->fe_user->getKey("ses", "order");
+		$cartId = (integer)$GLOBALS["TSFE"]->fe_user->getKey("ses", "cart");
 		//Get the order of this session
-		if (!empty($session_id) && !empty($orderId)) {
+		if (!empty($session_id) && !empty($cartId)) {
 			
-			$orders = $this->orderRepository->findByUid($orderId);
+			$cart = $this->cartRepository->findByUid($cartId);
 			
-			if ($orders instanceof \Arm\T3sixshop\Domain\Model\Order) {
+			if ($cart instanceof \Arm\T3sixshop\Domain\Model\Cart) {
 				//Get all the order items
-				$orderitems = $this->orderitemRepository->findByOrders($orders);
+				$cartitems = $this->cartitemRepository->findByCart($cart);
 				
-				if (count($orderitems) == 0) {
+				if (count($cartitems) == 0) {
 					//set the order to zero
-					$orders->setAmount(0);
-					$this->orderRepository->update($orders);
+					$cart->setAmount(0);
+					$this->cartRepository->update($cart);
 				}
-				$this->view->assign('orders', $orders);
-				$this->view->assign('orderitems', $orderitems);
+				else {
+					foreach ($cartitems as $item) {
+						if($item instanceof \Arm\T3sixshop\Domain\Model\Cartitem) {
+							$itemcategory = $item->getProduct()->getCategory();
+							if ($itemcategory instanceof \Arm\T3sixshop\Domain\Model\Category) {
+								if ($this->minOrderValue < $itemcategory->getMinorderval()) {
+									$this->minOrderValue = $itemcategory->getMinorderval();
+								}
+							}
+						}
+					}
+				}
+				$this->view->assign('cart', $cart);
+				$this->view->assign('cartitems', $cartitems);
+				$this->view->assign('minordervalue', $this->minOrderValue);
+				if ($this->request->hasArgument('category')) {
+					$category = $this->request->getArgument('category');
+				}
+				$this->view->assign('category', $category);
 			}
 		}
 	}
@@ -364,7 +549,8 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	public function updateAction(\Arm\T3sixshop\Domain\Model\Product $product) {
 		//Check set session, allow for non logged user
 		$session_id = $GLOBALS["TSFE"]->fe_user->getKey("ses", "session_id");
-		$orderId = $GLOBALS["TSFE"]->fe_user->getKey("ses", "order");
+		$cartId = $GLOBALS["TSFE"]->fe_user->getKey("ses", "cart");
+		$category = $product->getCategory();
 		
 		if (empty($session_id)) {
 			$GLOBALS['TSFE']->fe_user->start();
@@ -380,34 +566,33 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			$amt = $qty * $rate;
 			
 			//Check whether any order is present in the session
-			if ($orderId) {
-				$orderObj = $this->orderRepository->findByUid($orderId);
+			if ($cartId) {
+				$cart = $this->cartRepository->findByUid($cartId);
 			}
 			
-			if (!($orderObj instanceof \Arm\T3sixshop\Domain\Model\Order)) { 
+			if (!($cart instanceof \Arm\T3sixshop\Domain\Model\Cart)) { 
 				//new order
 				//Create persistence manager
 				$persistanceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
 					
-				$order = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Arm\\T3sixshop\\Domain\\Model\\Order');
+				$cart = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Arm\\T3sixshop\\Domain\\Model\\Cart');
 				
 				if ($GLOBALS['TSFE']->fe_user->user['uid']) {
 					
-					$order->setUser($GLOBALS['TSFE']->fe_user->user['uid']);
-					$order->setFname($GLOBALS['TSFE']->fe_user->user['first_name']);
-					$order->setLname($GLOBALS['TSFE']->fe_user->user['last_name']);
-					$order->setEmail($GLOBALS['TSFE']->fe_user->user['email']);
-					$order->setApartment($GLOBALS['TSFE']->fe_user->user['apartment']);
-					$order->setAddress($GLOBALS['TSFE']->fe_user->user['address']);
-					$order->setPhone($GLOBALS['TSFE']->fe_user->user['telephone']);
-					$order->setZip($GLOBALS['TSFE']->fe_user->user['zip']);
-					
+					$cart->setUser($GLOBALS['TSFE']->fe_user->user['uid']);
 					//do not use the md5 session but typo3 session
 					$session_id = $GLOBALS['TSFE']->fe_user->user['ses_id'];
+					$cart->setFname($GLOBALS['TSFE']->fe_user->user['first_name']);
+					$cart->setLname($GLOBALS['TSFE']->fe_user->user['last_name']);
+					$cart->setEmail($GLOBALS['TSFE']->fe_user->user['email']);
+					$cart->setApartment($GLOBALS['TSFE']->fe_user->user['apartment']);
+					$cart->setAddress($GLOBALS['TSFE']->fe_user->user['address']);
+					$cart->setPhone($GLOBALS['TSFE']->fe_user->user['telephone']);
+					$cart->setZip($GLOBALS['TSFE']->fe_user->user['zip']);
 				}
 				
 				//Check for duplicate session
-				$dupObj = $this->orderRepository->findBySession($session_id);
+				$dupObj = $this->cartRepository->findBySession($session_id);
 				
 				if (!empty($dupObj)) {
 					//duplicate, regenerate the session
@@ -415,30 +600,32 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				}
 				//Check for empty session
 				$GLOBALS["TSFE"]->fe_user->setKey("ses","session_id", $session_id);
-				$order->setSession($session_id);
+				$cart->setSession($session_id);
 				
-				$this->orderRepository->add($order);
+				$this->cartRepository->add($cart);
 				//this will immediately save to DB and uid will be generated
 				$persistanceManager->persistAll(); 
 				//get the uid
-				$orderId = $order->getUid();
+				$cartId = $cart->getUid();
 				//Store the order is to session
-				$GLOBALS["TSFE"]->fe_user->setKey("ses","order", $orderId);
+				$GLOBALS["TSFE"]->fe_user->setKey("ses", "cart", $cartId);
 				
-				$genId = $this->generateOrderid($orderId);
-				$order->setOrderid($genId);
+				//$genId = $this->generateOrderid($orderId);
+				//$order->setOrderid($genId);
 				
 				//Add to the order item
-				$orderItem = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Arm\\T3sixshop\\Domain\\Model\\Orderitem');
-				$orderItem->setOrders($order);
-				$orderItem->setProduct($product);
-				$orderItem->setName($product->getName());
-				$orderItem->setQty($qty);
-				$orderItem->setRate($rate);
-				$orderItem->setAmount($amt);
-				$this->orderitemRepository->add($orderItem);
-				$order->addOrderitem($orderItem);
-				$order->setAmount($amt);
+				$cartItem = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Arm\\T3sixshop\\Domain\\Model\\Cartitem');
+				$cartItem->setCart($cart);
+				$cartItem->setProduct($product);
+				$cartItem->setName($product->getName());
+				$cartItem->setQty($qty);
+				$cartItem->setRate($rate);
+				$cartItem->setAmount($amt);
+				$cartItem->setUnit($product->getUnit());
+				
+				$this->cartitemRepository->add($cartItem);
+				$cart->addCartitem($cartItem);
+				$cart->setAmount($amt);
 				$persistanceManager->persistAll();
 				
 				$this->flashMessageContainer->flush();
@@ -447,26 +634,26 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			else {
 				
 				//Check whether this order has the product
-				$dbOrderitem = $this->orderitemRepository->findByOrderProduct($orderObj,$product);
+				$dbCartitem = $this->cartitemRepository->findByCartProduct($cart,$product);
 				
-				if ($dbOrderitem instanceof \Arm\T3sixshop\Domain\Model\Orderitem) {
+				if ($dbCartitem instanceof \Arm\T3sixshop\Domain\Model\Cartitem) {
 					
 					//matching item with same product
-					$existQty = $dbOrderitem->getQty();
+					$existQty = $dbCartitem->getQty();
 					//Check for quantity
 					if ($existQty != $qty) {
 						//Need to update
-						$existAmt = $dbOrderitem->getAmount();
+						$existAmt = $dbCartitem->getAmount();
 						$diffAmt = $amt - $existAmt;
-						$dbOrderitem->setAmount($amt);
-						$dbOrderitem->setQty($qty);
-						$this->orderitemRepository->update($dbOrderitem);
+						$dbCartitem->setAmount($amt);
+						$dbCartitem->setQty($qty);
+						$this->cartitemRepository->update($dbCartitem);
 						
 						//update the order
-						$currentOrderAmt = $orderObj->getAmount();
-						$updatedOrderAmt = $currentOrderAmt + $diffAmt;
-						$orderObj->setAmount($updatedOrderAmt);
-						$this->orderRepository->update($orderObj);
+						$currentCartAmt = $cart->getAmount();
+						$updatedCartAmt = $currentCartAmt + $diffAmt;
+						$cart->setAmount($updatedCartAmt);
+						$this->cartRepository->update($cart);
 						
 						$this->flashMessageContainer->flush();
 						$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_updated','t3sixshop'));
@@ -479,21 +666,22 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				}
 				else {
 					//Add to the order item
-					$orderItem = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Arm\\T3sixshop\\Domain\\Model\\Orderitem');
-					$orderItem->setOrders($orderObj);
-					$orderItem->setName($product->getName());
-					$orderItem->setProduct($product);
-					$orderItem->setQty($qty);
-					$orderItem->setRate($rate);
-					$orderItem->setAmount($amt);
-					$this->orderitemRepository->add($orderItem);
+					$cartItem = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Arm\\T3sixshop\\Domain\\Model\\Cartitem');
+					$cartItem->setCart($cart);
+					$cartItem->setName($product->getName());
+					$cartItem->setProduct($product);
+					$cartItem->setQty($qty);
+					$cartItem->setRate($rate);
+					$cartItem->setAmount($amt);
+					$cartItem->setUnit($product->getUnit());
+					$this->cartitemRepository->add($cartItem);
 					
-					//Update Order
-					$orderObj->addOrderitem($orderItem);
-					$currentOrderAmt = $orderObj->getAmount();
-					$updatedOrderAmt = $currentOrderAmt + $amt;
-					$orderObj->setAmount($updatedOrderAmt);
-					$this->orderRepository->update($orderObj);
+					//Update Cart
+					$cart->addCartitem($cartItem);
+					$currentCartAmt = $cart->getAmount();
+					$updatedCartAmt = $currentCartAmt + $amt;
+					$cart->setAmount($updatedCartAmt);
+					$this->cartRepository->update($cart);
 					
 					$this->flashMessageContainer->flush();
 					$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_added','t3sixshop'));
@@ -501,14 +689,14 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				}
 			}
 		}
-		$this->redirect('list');
+		$this->redirect('list', 'Order', 't3sixshop', array('category' => $category));
 	}
 
 	/**
-	 * @param \Arm\T3sixshop\Domain\Model\Order $orders
+	 * @param \Arm\T3sixshop\Domain\Model\Cart $cart
 	 * @param \Arm\T3sixshop\Domain\Model\Product $product
 	 */
-	public function deleteAction(\Arm\T3sixshop\Domain\Model\Order $orders, \Arm\T3sixshop\Domain\Model\Product $product) {
+	public function deleteAction(\Arm\T3sixshop\Domain\Model\Cart $cart, \Arm\T3sixshop\Domain\Model\Product $product) {
 		//Check set session, allow for non logged user
 		$session_id = $GLOBALS["TSFE"]->fe_user->getKey("ses", "session_id");
 	
@@ -524,19 +712,19 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			$this->redirect('list');
 		}
 	
-		if (($product instanceof \Arm\T3sixshop\Domain\Model\Product) && ($orders instanceof \Arm\T3sixshop\Domain\Model\Order)) {
-				//Check whether this order has the product
-				$dbOrderitem = $this->orderitemRepository->findByOrderProduct($orders,$product);
+		if (($product instanceof \Arm\T3sixshop\Domain\Model\Product) && ($cart instanceof \Arm\T3sixshop\Domain\Model\Cart)) {
+				//Check whether this cart has the product
+				$dbCartitem = $this->cartitemRepository->findByCartProduct($cart,$product);
 	
-				if ($dbOrderitem instanceof \Arm\T3sixshop\Domain\Model\Orderitem) {
+				if ($dbCartitem instanceof \Arm\T3sixshop\Domain\Model\Cartitem) {
 						
-					$amt = $dbOrderitem->getAmount();
-					$currentOrderAmt = $orders->getAmount();
-					$updatedOrderAmt = $currentOrderAmt - $amt;
-					$orders->setAmount($updatedOrderAmt);
-					$this->orderRepository->update($orders);
+					$amt = $dbCartitem->getAmount();
+					$currentCartAmt = $cart->getAmount();
+					$updatedCartAmt = $currentCartAmt - $amt;
+					$cart->setAmount($updatedCartAmt);
+					$this->cartRepository->update($cart);
 					
-					$this->orderitemRepository->remove($dbOrderitem);
+					$this->cartitemRepository->remove($dbCartitem);
 					$this->flashMessageContainer->flush();
 					$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_remove','t3sixshop'));	
 				}
@@ -564,6 +752,7 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		\Arm\T3sixshop\Library\Pdf\Pdf::setFont('helvetica',9,'');
 		\Arm\T3sixshop\Library\Pdf\Pdf::writeCell("NAME: ",25,6,0,0);
 		\Arm\T3sixshop\Library\Pdf\Pdf::writeCell($orders->getFname().' '.$orders->getLname(),100,6,0,1);
+		
 		if (trim($orders->getApartment()) != '') {
 			\Arm\T3sixshop\Library\Pdf\Pdf::writeCell("APARTMENT: ",25,6,0,0);
 			\Arm\T3sixshop\Library\Pdf\Pdf::writeCell($orders->getApartment(),100,6,0,1);
@@ -592,7 +781,7 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			
 			\Arm\T3sixshop\Library\Pdf\Pdf::writeCell($count++,15,7,0,0,'R');
 			\Arm\T3sixshop\Library\Pdf\Pdf::writeCell($oitem->getName(),75,7,0,0);
-			\Arm\T3sixshop\Library\Pdf\Pdf::writeCell(sprintf("%.02f", $oitem->getRate()),30,7,0,0, 'C');
+			\Arm\T3sixshop\Library\Pdf\Pdf::writeCell(sprintf("%.02f", $oitem->getRate()).'/'.$oitem->getUnit(),30,7,0,0, 'C');
 			\Arm\T3sixshop\Library\Pdf\Pdf::writeCell($oitem->getQty(), 30,7,0,0,'C');
 			\Arm\T3sixshop\Library\Pdf\Pdf::writeCell(sprintf("%.02f", $oitem->getAmount()),30,7,0,1,'R');
 		}
@@ -610,14 +799,27 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$y = \Arm\T3sixshop\Library\Pdf\Pdf::$pdf->GetY();
 		\Arm\T3sixshop\Library\Pdf\Pdf::drawLine(140,$y,190,$y);
 		
-		\Arm\T3sixshop\Library\Pdf\Pdf::$pdf->SetY($y+10);
+		\Arm\T3sixshop\Library\Pdf\Pdf::$pdf->SetY($y+7);
+		\Arm\T3sixshop\Library\Pdf\Pdf::setFont('helvetica',8,'');
+		\Arm\T3sixshop\Library\Pdf\Pdf::writeCell('ORDER AMOUNT IN WORDS: '.$this->getAmountInWord($orders->getAmount()),170,5,0,1);
+		
+		$y = \Arm\T3sixshop\Library\Pdf\Pdf::$pdf->GetY();
+		\Arm\T3sixshop\Library\Pdf\Pdf::$pdf->SetY($y+7);
 		\Arm\T3sixshop\Library\Pdf\Pdf::setFont('helvetica',7,'');
-		\Arm\T3sixshop\Library\Pdf\Pdf::writeCell("* The delivery of this order is FREE!",80,5,0,1);
+		\Arm\T3sixshop\Library\Pdf\Pdf::writeCell("* The delivery of this order is FREE!",180,6,0,1);
 		\Arm\T3sixshop\Library\Pdf\Pdf::writeCell("Please pay in cash the exact amount mentioned in the invoice. Thank you, purchase again.",180,5,0,1);
 		\Arm\T3sixshop\Library\Pdf\Pdf::writeCell("For any clarification, please call ". $GLOBALS['TSFE']->tmpl->setup['page.']['10.']['variables.']['contact_no.']['value'] ." OR send email to ". $this->settings['orderEmail'] .".",180,5,0,1);
 		return \Arm\T3sixshop\Library\Pdf\Pdf::generatePDF('order-'.$orders->getUid().'.pdf',FALSE);
 	}
 	
+	/**
+	 * 
+	 * @param \float $number
+	 * @return \string
+	 */
+	private function getAmountInWord($number) {
+		return \Arm\T3sixshop\Library\Converter::getAmountInWords($number);
+	}
 	/**
 	 * Generates the orderId
 	 * 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-14T23:46:34Z" product-name="t3sixshop">
+		<header/>
+		<body>
+
+			<trans-unit id="name.description">
+				<source>name</source>
+			</trans-unit>
+			<trans-unit id="price.description">
+				<source>price</source>
+			</trans-unit>
+			<trans-unit id="schedule.description">
+				<source>schedule</source>
+			</trans-unit>
+			<trans-unit id="freeprice.description">
+				<source>freeprice</source>
+			</trans-unit>
+			<trans-unit id="orders.description">
+				<source>orders</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

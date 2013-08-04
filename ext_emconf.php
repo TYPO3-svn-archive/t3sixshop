@@ -11,8 +11,8 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'ARM Shop',
-	'description' => 'ARM Shop extension is developed for TYPO3 6.x and above. This extension will provide complete e-commerce features to a TYPO3 website. The extension uses jQuery based jScroll techniques to list more products with Ajax request, jqZoom library for product images.',
+	'title' => 'Shop for T3 v6+',
+	'description' => 'Shop extension for TYPO3 6.x',
 	'category' => 'plugin',
 	'author' => 'Anisur Rahaman Mullick',
 	'author_email' => 'anisur@armtechnologies.com',
@@ -27,7 +27,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'version' => '0.1.0',
+	'version' => '0.1.2',
 	'constraints' => array(
 		'depends' => array(
 			'extbase' => '6.0',

@@ -136,6 +136,13 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	protected $discount;
 	
+	/**
+	 * shipping
+	 *
+	 * @var \float
+	 */
+	protected $shipping;
+	
 	
 	/**
 	 * 
@@ -604,5 +611,23 @@ class Order extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->deliveryoption = $deliveryoption;
 	}
 
+	/**
+	 * Returns the shipping
+	 *
+	 * @return \float $shipping
+	 */
+	public function getShipping() {
+		return $this->shipping;
+	}
+	
+	/**
+	 * Sets the shipping
+	 *
+	 * @param \float $shipping
+	 * @return void
+	 */
+	public function setShipping($shipping) {
+		$this->shipping = $shipping;
+	}
 }
 ?>

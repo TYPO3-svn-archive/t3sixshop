@@ -20,6 +20,8 @@ plugin.tx_t3sixshop {
 		senderEmailName = {$plugin.tx_t3sixshop.settings.senderEmailName}
 		minOrderAmt = {$plugin.tx_t3sixshop.settings.minOrderAmt}
 		registerPid = {$plugin.tx_t3sixshop.settings.registerPid}
+		enableCoupon = {$plugin.tx_t3sixshop.settings.enableCoupon}
+		
 		list {
 			perpage = {$plugin.tx_t3sixshop.settings.list.perpage}
 			width = {$plugin.tx_t3sixshop.settings.list.width}

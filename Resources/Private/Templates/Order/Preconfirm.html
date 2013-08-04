@@ -1,0 +1,109 @@
+<f:layout name="Default" />
+<f:section name="main">
+<h1>Checkout</h1>
+<h4>Your order amount: {settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{cart.amount}</f:format.number></h4>
+<div class="alert">
+	<f:flashMessages />
+</div>
+<f:if condition="{cart}">
+	<f:then>
+		<f:form name="cart" id="checkoutFrm" method="post" action="confirm" object="{cart}">
+			<table class="tx_t3sixshop_orders checkout-form">
+				<tr>
+					<td>&nbsp;</td>
+					<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.fname" /></td>
+					<td class="colsrno">:</td>
+					<td><f:form.textfield property="fname" class="required" value="{cart.fname}" /></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.lname" /></td>
+					<td class="colsrno">:</td>
+					<td><f:form.textfield property="lname" class="required" value="{cart.lname}"  /></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.email" /></td>
+					<td class="colsrno">:</td>
+					<td><f:form.textfield property="email" class="required email" value="{cart.email}"  /></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.phone" /></td>
+					<td class="colsrno">:</td>
+					<td><f:form.textfield property="phone" class="required" value="{cart.phone}"  /></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.apartment" /></td>
+					<td class="colsrno">:</td>
+					<td><f:form.textfield property="apartment" value="{cart.apartment}"  /></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.address" /></td>
+					<td class="colsrno">:</td>
+					<td><f:form.textfield property="address" class="required" value="{cart.address}" /></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.zip" /></td>
+					<td class="colsrno">:</td>
+					<td><f:form.textfield property="zip" class="required" value="{cart.zip}" /></td>
+				</tr>
+				<f:if condition="{discount}">
+					<tr>
+						<td>&nbsp;</td>
+						<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.coupon" /></td>
+						<td class="colsrno">:</td>
+						<td>{coupon.code}<f:form.hidden name="coupon" value="{coupon}" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.discount" /></td>
+						<td class="colsrno">:</td>
+						<td>{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{discount}</f:format.number> (-)<f:form.hidden name="discount" value="{discount}" /></td>
+					</tr>
+				</f:if>
+				<f:if condition="{deliveryoption}">
+					<tr>
+						<td>&nbsp;</td>
+						<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.deliveryoption" /></td>
+						<td class="colsrno">:</td>
+						<td>{deliveryoption.name}<f:form.hidden name="deliveryoption" value="{deliveryoption}" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.shipping" /></td>
+						<td class="colsrno">:</td>
+						<td>{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{shipping}</f:format.number><f:form.hidden name="shipping" value="{shipping}" /></td>
+					</tr>
+				</f:if>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.netAmount" /></td>
+					<td class="colsrno">:</td>
+					<td>{settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{calcAmount}</f:format.number><f:form.hidden name="netamount" value="{calcAmount}" /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><f:form.submit name="checkoutBtn" value="{f:translate(key:'tx_t3sixshop_domain_model_order.confirm_btn')}" class="button" /> &nbsp; <f:link.action action="form" arguments="{cart:cart, coupon: couponcode, deliveryoption: deliveryoption}" class="button"><f:translate key="tx_t3sixshop_domain_model_order.back" /></f:link.action></td>
+				</tr>
+				<f:if condition="{registerme}">
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td><f:form.hidden name="registerme" value="1" /><f:translate key="tx_t3sixshop_domain_model_order.createlogin" /></td>
+					</tr>
+				</f:if>
+			</table>
+		</f:form>
+	</f:then>
+	<f:else>
+		<div class="notice"><f:translate key="tx_t3sixshop_domain_model_order.noorder" /></div>
+	</f:else>
+</f:if>
+</f:section>

@@ -9,6 +9,9 @@
 	<div id="right-pblock" class="clearfix">
 		<div id="prd-details">
 			<h1>{product.name}</h1>
+			<f:if condition="{product.manufacturer}">
+				<div class="manufacturer"><label><f:translate key="tx_t3sixshop_domain_model_product.manufacturer" /></label>: {product.manufacturer.name}</div>
+			</f:if>
 			<div id="prd-desc">{product.shorttext}
 				<f:if condition="{product.description}">
 				<br />

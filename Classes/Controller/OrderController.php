@@ -70,6 +70,22 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	protected $cartitemRepository;
 	
 	/**
+	 * couponRepository
+	 * 
+	 * @var \ARM\T3sixshop\Domain\Repository\CouponRepository
+	 * @inject
+	 */
+	protected $couponRepository;
+	
+	/**
+	 * deliveryoptionRepository
+	 * 
+	 * @var \ARM\T3sixshop\Domain\Repository\DeliveryoptionRepository
+	 * @inject
+	 */
+	protected $deliveryoptionRepository;
+	
+	/**
 	 * orderRepository
 	 *
 	 * @var \ARM\T3sixshop\Domain\Repository\OrderRepository
@@ -169,8 +185,11 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 					$this->view->assign('order', $order);
 				}
 				else {
-					$this->flashMessageContainer->flush();
-					$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_order.invalid_orderid','t3sixshop'));
+					$this->controllerContext->getFlashMessageQueue()->addMessage(
+							new \TYPO3\CMS\Core\Messaging\FlashMessage(
+									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_order.invalid_orderid','t3sixshop'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+							)
+					);
 				}
 			}
 		}
@@ -184,55 +203,30 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	public function confirmAction(\Arm\T3sixshop\Domain\Model\Cart $cart) {
 		
-		if ($this->request->hasArgument('loginBtn')) {
-			
-			$loginData['uname'] =  $this->request->getArgument('username');
-			$loginData['uident'] =  $this->request->getArgument('password');
-			$loginData['status'] =  'login';
-			
-			$GLOBALS['TSFE']->fe_user->checkPid=0;
-			$info = $GLOBALS['TSFE']->fe_user->getAuthInfoArray();
-			$user = $GLOBALS['TSFE']->fe_user->fetchUserRecord($info['db_user'] ,$loginData['uname']);
-			
-			$validPass = FALSE;
-			
-			if (\t3lib_extMgm::isLoaded('saltedpasswords')) {
-				
-				if (\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('FE')) {
-					$md5Salt = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Saltedpasswords\Salt\Md5Salt');	
-					$validPass = $md5Salt->checkPassword($loginData['uident'], $user['password']);
-				}
-			}
-			else {
-				$validPass = ($user['password'] == $loginData['uident']);
-			}
-			
-			if ($validPass) {
-				
-				$GLOBALS['TSFE']->fe_user->createUserSession($user);
-				//Set the information in the orders
-				$cart->setUser($user['uid']);
-				$cart->setFname($user['first_name']);
-				$cart->setLname($user['last_name']);
-				$cart->setEmail($user['email']);
-				$cart->setApartment($user['apartment']);
-				$cart->setAddress($user['address']);
-				$cart->setPhone($user['telephone']);
-				$cart->setZip($user['zip']);
-				
-				$this->processOrder($cart);
-			}
-			else {
-				$this->flashMessageContainer->flush();
-				$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_customer.login_failed','t3sixshop'));
-				$this->redirect("form","Order","t3sixshop",array('cart' => $cart));
-			}
+		if ($this->request->hasArgument('deliveryoption')) {
+			$deliveryUid = (integer)$this->request->getArgument('deliveryoption');
+			$deliveryoption = $this->deliveryoptionRepository->findByUid($deliveryUid);
 		}
-		else {
+		
+		if ($this->request->hasArgument('shipping')) {
+			$shipping = $this->request->getArgument('shipping');
+		}
+		
+		if ($this->request->hasArgument('coupon')) {
+			$couponUid = (integer)$this->request->getArgument('coupon');
+			$coupon = $this->couponRepository->findByUid($couponUid);
+		}
+		
+		if ($this->request->hasArgument('discount')) {
+			$discount = $this->request->getArgument('discount');
+		}
+	
+		
+		$this->processOrder($cart, $deliveryoption, $shipping, $coupon, $discount);
+		
+		if ($GLOBALS['TSFE']->fe_user->user['uid'] == '') {
 			
-			$this->processOrder($cart);
-			
-			if ($GLOBALS['TSFE']->fe_user->user['uid'] == '') {
+			if($this->request->hasArgument('registerme')) {
 				
 				if ($this->request->getArgument('registerme') == "1") {
 					//Process for registration
@@ -264,8 +258,12 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	/**
 	 * 
 	 * @param \Arm\T3sixshop\Domain\Model\Cart $cart
+	 * @param \Arm\T3sixshop\Domain\Model\Deliveryoption $deliveryoption
+	 * @param \float $shipping
+	 * @param \Arm\T3sixshop\Domain\Model\Coupon $coupon
+	 * @param \float $discount
 	 */
-	protected function processOrder(\Arm\T3sixshop\Domain\Model\Cart $cart) {
+	protected function processOrder(\Arm\T3sixshop\Domain\Model\Cart $cart, \Arm\T3sixshop\Domain\Model\Deliveryoption $deliveryoption = NULL, $shipping = NULL, \Arm\T3sixshop\Domain\Model\Coupon $coupon = NULL, $discount = NULL) {
 		//Store the order
 		$cart->setStatus(1);
 		$this->cartRepository->update($cart);
@@ -277,42 +275,7 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		
 		//Get the items from cart
 		$cartItems = $cart->getCartitems();
-		
-		foreach ($cartItems as $item) {
-			
-			$itemcat = $item->getProduct()->getCategory();
-			$itemcatUid = $itemcat->getUid();
-			
-			if($itemcat->getSeparatebill() == TRUE) {
-				$categories["$itemcatUid"][] = $item;
-			}
-			else {
-				$itemNormal[] =  $item;
-			}
-			
-		}
-		
-		if (count($itemNormal) > 0) {
-			$this->createOrder($cart,$itemNormal);
-		}
-		
-		if (count($categories) > 0) {
-			
-			foreach ($categories as $catUid=>$catitems) {
-				
-				$catObj = $this->categoryRepository->findByUid($catUid);
-				
-				if ($catObj->getDelivertime() == self::intNextDay) {
-					$this->createOrder($cart,$catitems, TRUE, FALSE);
-				}
-				elseif ($catObj->getDelivertime() == self::intWeek) {
-					$this->createOrder($cart,$catitems, FALSE, TRUE);
-				}
-				else {
-					$this->createOrder($cart,$catitems);
-				}
-			}
-		}
+		$this->createOrder($cart,$cartItems,$deliveryoption,$shipping,$coupon,$discount);
 		
 		//destroy the session
 		$GLOBALS["TSFE"]->fe_user->setKey("ses", "session_id", NULL);
@@ -325,10 +288,12 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * 
 	 * @param \Arm\T3sixshop\Domain\Model\Cart $cart
 	 * @param \array $items
-	 * @param \boolean $nextDay
-	 * @param \boolean $weekEnd
+	 * @param \Arm\T3sixshop\Domain\Model\Deliveryoption $deliveryoption
+	 * @param \float $shipping
+	 * @param \Arm\T3sixshop\Domain\Model\Coupon $coupon
+	 * @param \float $discount
 	 */
-	private function createOrder($cart, $items, $nextDay = FALSE, $weekEnd = FALSE) {
+	private function createOrder(\Arm\T3sixshop\Domain\Model\Cart $cart, $items, \Arm\T3sixshop\Domain\Model\Deliveryoption $deliveryoption = NULL, $shipping = NULL, \Arm\T3sixshop\Domain\Model\Coupon $coupon = NULL, $discount = NULL) {
 		
 		//Create persistence manager
 		$persistanceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
@@ -345,6 +310,21 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$order->setPhone($cart->getPhone());
 		$order->setZip($cart->getZip());
 		$order->setStatus(1);
+		
+		if ($deliveryoption instanceof \Arm\T3sixshop\Domain\Model\Deliveryoption) {
+			$order->setDeliveryoption($deliveryoption);
+		}
+		
+		if(isset($shipping)) {
+			$order->setShipping($shipping);
+		}
+		
+		if($coupon instanceof \Arm\T3sixshop\Domain\Model\Coupon) {
+			$order->setCoupon($coupon);
+		}
+		if(isset($discount)) {
+			$order->setDiscount($discount);
+		}
 		
 		$this->orderRepository->add($order);
 		//this will immediately save to DB and uid will be generated
@@ -376,8 +356,17 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		}
 		
 		$order->setAmount($orderAmount);
+		$totalAmount = $orderAmount;
+		
+		if (isset($shipping)) {
+			$totalAmount += $shipping;
+		}
+		
+		if (isset($discount)) {
+			$totalAmount -= $discount;
+		}
 		//Set the totalamount
-		$order->setTotalamount($orderAmount);
+		$order->setTotalamount($totalAmount);
 		
 		//update the user repository
 		if ($GLOBALS['TSFE']->fe_user->user['uid']) {
@@ -423,15 +412,10 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$emailArr['apartment'] = $order->getApartment();
 		$emailArr['orderid'] = $order->getOrderid();
 		$emailArr['amount'] = sprintf("%.02f", $order->getAmount());
-		
-		if ($nextDay) {
-			$emailArr['expectedDate'] =  $this->getDeliveryDate('N');
-		}
-		elseif ($weekEnd) {
-			//get the expected delivery date
-			$emailArr['expectedDate'] =  $this->getDeliveryDate('W');
-		}
-		
+		$emailArr['delivery'] = $order->getDeliveryoption()->getName();
+		$emailArr['shipping'] = sprintf("%.02f", $order->getShipping());
+		$emailArr['discount'] = sprintf("%.02f", $order->getDiscount());
+		$emailArr['netamount'] = sprintf("%.02f", $order->getTotalamount());
 		
 		//Send Email
 		if(!$this->sendTemplateEmail($recipient, $sender, $subject, $template, $cc, $emailArr, $pdf, 'order-'.$order->getUid().'.pdf')) {
@@ -490,10 +474,209 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 					$this->view->assign('user', $user);
 				}
 			}
+			if ($this->request->hasArgument('coupon')) {
+				$coupon = (string)$this->request->getArgument('coupon');
+				$this->view->assign('coupon', $coupon);
+			}
+			
+			if ($this->request->hasArgument('deliveryoption')) {
+				$deliveryUid = (integer)$this->request->getArgument('deliveryoption');
+				$this->view->assign('delivery', $deliveryUid);
+			}
+			//deliveryoption
+			$deliveryoption = $this->deliveryoptionRepository->findAll();
+			$this->view->assign('deliveryoption', $deliveryoption);
 			$this->view->assign('cart', $cart);
 		}
 		else {
 			$this->redirect("list");
+		}
+	}
+	
+	/**
+	 * Checkout form
+	 *
+	 * @param \Arm\T3sixshop\Domain\Model\Cart $cart
+	 * @validate
+	 */
+	public function preconfirmAction(\Arm\T3sixshop\Domain\Model\Cart $cart) {
+		
+		$cartAmount = $cart->getAmount();
+		$this->cartRepository->update($cart);
+		
+		if ($this->request->hasArgument('registerme')) {
+			$this->view->assign('registerme', $this->request->getArgument('registerme'));			
+		}
+		
+		if ($this->request->hasArgument('loginBtn')) {
+				
+			$loginData['uname'] =  $this->request->getArgument('username');
+			$loginData['uident'] =  $this->request->getArgument('password');
+			$loginData['status'] =  'login';
+				
+			$GLOBALS['TSFE']->fe_user->checkPid=0;
+			$info = $GLOBALS['TSFE']->fe_user->getAuthInfoArray();
+			$user = $GLOBALS['TSFE']->fe_user->fetchUserRecord($info['db_user'] ,$loginData['uname']);
+				
+			$validPass = FALSE;
+				
+			if (\t3lib_extMgm::isLoaded('saltedpasswords')) {
+		
+				if (\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('FE')) {
+					$md5Salt = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Saltedpasswords\Salt\Md5Salt');
+					$validPass = $md5Salt->checkPassword($loginData['uident'], $user['password']);
+				}
+			}
+			else {
+				$validPass = ($user['password'] == $loginData['uident']);
+			}
+				
+			if ($validPass) {
+		
+				$GLOBALS['TSFE']->fe_user->createUserSession($user);
+				//Set the information in the orders
+				$cart->setUser($user['uid']);
+				$cart->setFname($user['first_name']);
+				$cart->setLname($user['last_name']);
+				$cart->setEmail($user['email']);
+				$cart->setApartment($user['apartment']);
+				$cart->setAddress($user['address']);
+				$cart->setPhone($user['telephone']);
+				$cart->setZip($user['zip']);
+				$this->view->assign('user', $user);
+			}
+			else {
+				$this->controllerContext->getFlashMessageQueue()->addMessage(
+						new \TYPO3\CMS\Core\Messaging\FlashMessage(
+								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_customer.login_failed','t3sixshop'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+						)
+				);
+			}
+		}
+		
+		
+		if ($this->request->hasArgument('deliveryoption')) {
+			
+			$deliveryUid = (integer)$this->request->getArgument('deliveryoption');
+			$deliveryoption = $this->deliveryoptionRepository->findByUid($deliveryUid);
+			
+			if ($deliveryoption instanceof \Arm\T3sixshop\Domain\Model\Deliveryoption) {
+				
+				$this->view->assign('deliveryoption', $deliveryoption);
+				$freeAmount = $deliveryoption->getFreeprice();
+				
+				if ($freeAmount > 0) {
+					
+					if ($cart->getAmount() >= $freeAmount) {
+						$shipping = 0;
+					}
+					else {
+						$shipping = $deliveryoption->getPrice();
+					}
+				}
+				$cartAmount += $shipping;
+			}
+		}
+	
+		//Check for coupon
+		if ($this->request->hasArgument('coupon')) {
+			
+			$couponCode = (string)$this->request->getArgument('coupon');
+			$this->view->assign('couponcode', $couponCode);
+			//find the coupon
+			$coupon = $this->couponRepository->findOneByCode($couponCode);
+			
+			if ($coupon instanceof \Arm\T3sixshop\Domain\Model\Coupon) {
+				
+				$discount = $this->getDiscount($cart, $coupon);
+				$this->view->assign('discount', $discount);
+				$this->view->assign('coupon', $coupon);
+				$cartAmount -= $discount;
+			}
+			else {
+				$this->controllerContext->getFlashMessageQueue()->addMessage(
+						new \TYPO3\CMS\Core\Messaging\FlashMessage(
+								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_order.couponinvalid','t3sixshop'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+						)
+				);	
+			}
+		}
+		
+		if ($cart->getAmount() >= (integer) $this->settings['minOrderAmt']) {
+			$this->view->assign('shipping', $shipping);
+			$this->view->assign('cart', $cart);
+			$this->view->assign('calcAmount', $cartAmount);
+		}
+		else {
+			$this->redirect("list");
+		}
+	}
+	
+	/**
+	 * @param \Arm\T3sixshop\Domain\Model\Cart $cart
+	 * @param \Arm\T3sixshop\Domain\Model\Coupon $coupon
+	 * @return \float
+	 */
+	private function getDiscount(\Arm\T3sixshop\Domain\Model\Cart $cart, \Arm\T3sixshop\Domain\Model\Coupon $coupon) {
+		
+		$usage = $coupon->getCuse();
+		
+		if ($usage == 'O') {
+
+			$cpnCnt = $this->orderRepository->findByCoupon($coupon);
+			
+			if (count($cpnCnt) == 0) {
+				
+				if ($coupon->getDtype() == 'P') {
+					
+					$percent = $coupon->getDiscount();
+					$amount = $cart->getAmount();
+					$discount = ($amount * $percent / 100);
+					return $discount;
+				}
+				else {
+					
+					$discount = $coupon->getDiscount();
+					$amount = $cart->getAmount();
+					
+					if ($discount < $amount) {
+						return $discount;
+					}
+					else {
+						return $amount;
+					}
+				}
+			}
+			else {
+				$this->controllerContext->getFlashMessageQueue()->addMessage(
+						new \TYPO3\CMS\Core\Messaging\FlashMessage(
+								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_order.couponused','t3sixshop'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+						)
+				);
+					
+				return 0.00;
+			}
+		}
+		else {
+			if ($coupon->getDtype() == 'P') {
+				
+				$percent = $coupon->getDiscount();
+				$amount = $cart->getAmount();
+				$discount = ($amount * $percent / 100);
+				return $discount;
+			}
+			else {
+				
+				$discount = $coupon->getDiscount();
+				$amount = $cart->getAmount();
+				
+				if ($discount < $amount) {
+					return $discount;
+				}
+				else {
+					return $amount;
+				}
+			}
 		}
 	}
 	
@@ -628,8 +811,12 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				$cart->setAmount($amt);
 				$persistanceManager->persistAll();
 				
-				$this->flashMessageContainer->flush();
-				$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_added','t3sixshop'));
+				$this->controllerContext->getFlashMessageQueue()->addMessage(
+						new \TYPO3\CMS\Core\Messaging\FlashMessage(
+								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_added','t3sixshop'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+						)
+				);
+				
 			}
 			else {
 				
@@ -655,13 +842,19 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 						$cart->setAmount($updatedCartAmt);
 						$this->cartRepository->update($cart);
 						
-						$this->flashMessageContainer->flush();
-						$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_updated','t3sixshop'));
+						$this->controllerContext->getFlashMessageQueue()->addMessage(
+								new \TYPO3\CMS\Core\Messaging\FlashMessage(
+										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_updated','t3sixshop'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+								)
+						);
 							
 					}
 					else {
-						$this->flashMessageContainer->flush();
-						$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.same_product_qty','t3sixshop'));
+						$this->controllerContext->getFlashMessageQueue()->addMessage(
+								new \TYPO3\CMS\Core\Messaging\FlashMessage(
+										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.same_product_qty','t3sixshop'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+								)
+						);
 					}
 				}
 				else {
@@ -683,9 +876,11 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 					$cart->setAmount($updatedCartAmt);
 					$this->cartRepository->update($cart);
 					
-					$this->flashMessageContainer->flush();
-					$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_added','t3sixshop'));
-						
+					$this->controllerContext->getFlashMessageQueue()->addMessage(
+							new \TYPO3\CMS\Core\Messaging\FlashMessage(
+									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_added','t3sixshop'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+							)
+					);	
 				}
 			}
 		}
@@ -707,8 +902,11 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			$session_id = session_id();
 			$GLOBALS["TSFE"]->fe_user->setKey("ses","session_id", $session_id);
 			
-			$this->flashMessageContainer->flush();
-			$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_order.session_expired','t3sixshop'));
+			$this->controllerContext->getFlashMessageQueue()->addMessage(
+					new \TYPO3\CMS\Core\Messaging\FlashMessage(
+							\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_order.session_expired','t3sixshop'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+					)
+			);
 			$this->redirect('list');
 		}
 	
@@ -725,8 +923,13 @@ class OrderController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 					$this->cartRepository->update($cart);
 					
 					$this->cartitemRepository->remove($dbCartitem);
-					$this->flashMessageContainer->flush();
-					$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_remove','t3sixshop'));	
+					
+					$this->controllerContext->getFlashMessageQueue()->addMessage(
+							new \TYPO3\CMS\Core\Messaging\FlashMessage(
+									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_t3sixshop_domain_model_orderitem.product_remove','t3sixshop'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+							)
+					);
+					
 				}
 		}
 		$this->redirect('list');

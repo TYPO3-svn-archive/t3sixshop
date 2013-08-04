@@ -7,7 +7,9 @@ ul.product-list { list-style-type: none;}
 .clearfix:before, .clearfix:after { content: "."; display: block; height: 0; overflow: hidden;}
 .clearfix:after { clear: both;}
 .error {color: #f00; font-weight: bold}
-.alert {color: #00b259; font-size:14px; font-weight: bold}
+.alert {color: #f00; font-size:12px; font-weight: bold}
+.alert ul, .error ul {list-style:none}
+.alert ul li,.error ul li {list-style-type:none}
 
 /* .tx-t3sixshop .jscroll-added {margin-left: -20px} */
 /* .featured {margin-left: -20px}*/

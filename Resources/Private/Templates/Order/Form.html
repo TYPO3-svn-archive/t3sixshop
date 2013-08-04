@@ -10,7 +10,7 @@
 		
 		<f:if condition="{user}">
 			<f:then>
-				<f:form name="cart" id="checkoutFrm" method="post" action="confirm" object="{cart}">
+				<f:form name="cart" id="checkoutFrm" method="post" action="preconfirm" object="{cart}">
 					<table class="tx_t3sixshop_orders checkout-form">
 						<tr>
 							<td>&nbsp;</td>
@@ -36,6 +36,26 @@
 							<td class="colsrno">:</td>
 							<td>{user.telephone}</td>
 						</tr>
+						<f:if condition="{settings.enableCoupon} == 1">
+						<tr>
+							<td>&nbsp;</td>
+							<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.coupon" /></td>
+							<td class="colsrno">:</td>
+							<td><f:form.textfield name="coupon" value="{coupon}" /></td>
+						</tr>
+						</f:if>
+						<f:if condition="{deliveryoption}">
+							<tr>
+								<td>&nbsp;</td>
+								<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.deliveryoption" /></td>
+								<td class="colsrno">:</td>
+								<td>
+									<f:for each="{deliveryoption}" as="doption">
+										<label>{doption.name} {settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{doption.price}</f:format.number></label> <f:form.radio name="deliveryoption" value="{doption.uid}" class="required" checked="{doption.uid} == {0:delivery}" /><br /> 
+									</f:for>
+								</td>
+							</tr>
+						</f:if>
 						<tr>
 							<td></td>
 							<td></td>
@@ -46,7 +66,7 @@
 				</f:form>
 			</f:then>
 			<f:else>
-				<f:form name="cart" id="checkoutFrm" method="post" action="confirm" object="{cart}">
+				<f:form name="cart" id="checkoutFrm" method="post" action="preconfirm" object="{cart}">
 					<table class="tx_t3sixshop_orders checkout-form">
 						<tr>
 							<td>&nbsp;</td>
@@ -90,11 +110,31 @@
 							<td class="colsrno">:</td>
 							<td><f:form.textfield property="zip" class="required" value="{cart.zip}" /></td>
 						</tr>
+						<f:if condition="{settings.enableCoupon} == 1">
+						<tr>
+							<td>&nbsp;</td>
+							<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.coupon" /></td>
+							<td class="colsrno">:</td>
+							<td><f:form.textfield name="coupon" value="{coupon}" /></td>
+						</tr>
+						</f:if>
+						<f:if condition="{deliveryoption}">
+							<tr>
+								<td>&nbsp;</td>
+								<td class="order-header"><f:translate key="tx_t3sixshop_domain_model_order.deliveryoption" /></td>
+								<td class="colsrno">:</td>
+								<td>
+									<f:for each="{deliveryoption}" as="doption">
+										 <label>{doption.name} {settings.currency} <f:format.number decimals="2" decimalSeparator="." thousandsSeparator=",">{doption.price}</f:format.number></label> <f:form.radio name="deliveryoption" value="{doption.uid}" class="required" checked="{doption.uid} == {0:delivery}" /><br /> 
+									</f:for>
+								</td>
+							</tr>
+						</f:if>
 						<tr>
 							<td></td>
 							<td></td>
 							<td></td>
-							<td><f:form.submit name="checkoutBtn" value="{f:translate(key:'tx_t3sixshop_domain_model_order.checkout_btn')}" class="button" /> &nbsp; <f:link.action action="list" arguments="{orders:orders}" class="button"><f:translate key="tx_t3sixshop_domain_model_order.cart" /></f:link.action></td>
+							<td><f:form.submit name="checkoutBtn" value="{f:translate(key:'tx_t3sixshop_domain_model_order.checkout_btn')}" class="button" /> &nbsp; <f:link.action action="list" class="button"><f:translate key="tx_t3sixshop_domain_model_order.cart" /></f:link.action></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -132,7 +172,6 @@
 				</f:form>
 			</f:else>
 		</f:if>
-		
 	</f:then>
 	<f:else>
 		<div class="notice"><f:translate key="tx_t3sixshop_domain_model_order.noorder" /></div>

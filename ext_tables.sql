@@ -178,11 +178,12 @@ CREATE TABLE tx_t3sixshop_domain_model_order (
 	totalamount double(11,2) DEFAULT '0.00' NOT NULL,
 	status int(11) DEFAULT '0' NOT NULL,
 	discount double(11,2) DEFAULT '0.00' NOT NULL,
+	shipping float(7,2) DEFAULT '0.00' NOT NULL,
 	deliveryon int(11) DEFAULT '0' NOT NULL,
 	orderid varchar(255) DEFAULT '' NOT NULL,
 	orderitems int(11) unsigned DEFAULT '0' NOT NULL,
 	coupon int(11) DEFAULT '0' NOT NULL,
-	deliveryoptions int(11) DEFAULT '0' NOT NULL,
+	deliveryoption int(11) DEFAULT '0' NOT NULL,
 	remark varchar(255) DEFAULT '' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,

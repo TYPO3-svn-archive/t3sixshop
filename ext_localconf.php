@@ -55,11 +55,11 @@ if (!defined('TYPO3_MODE')) {
 	'Arm.' . $_EXTKEY,
 	'Cart',
 	array(
-		'Order' => 'list, cart, update, delete, form, confirm',
+		'Order' => 'list, cart, update, delete, form, preconfirm, confirm',
 	),
 	// non-cacheable actions
 	array(
-		'Order' => 'list, cart, update, delete, form, confirm',
+		'Order' => 'list, cart, update, delete, form, preconfirm, confirm',
 	)
 );
 

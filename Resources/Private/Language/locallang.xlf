@@ -26,6 +26,12 @@
 			<trans-unit id="tx_t3sixshop_domain_model_product.name">
 				<source>name</source>
 			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.shorttext">
+				<source>Short text</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_product.manufacturer">
+				<source>Manufacturer</source>
+			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_product.description">
 				<source>description</source>
 			</trans-unit>
@@ -102,6 +108,12 @@
 			<trans-unit id="tx_t3sixshop_domain_model_order.discount">
 				<source>Discount</source>
 			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.shipping">
+				<source>Shipping</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.netAmount">
+				<source>Net Amount</source>
+			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.deliveryon">
 				<source>Delivery date</source>
 			</trans-unit>
@@ -117,6 +129,18 @@
 			<trans-unit id="tx_t3sixshop_domain_model_order.total">
 				<source>TOTAL</source>
 			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.coupon">
+				<source>Coupon</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.couponused">
+				<source>Coupon already used!</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.couponinvalid">
+				<source>Invalid coupon!</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.deliveryoption">
+				<source>Delivery mode</source>
+			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.checkout">
 				<source>Checkout</source>
 			</trans-unit>
@@ -126,8 +150,14 @@
 			<trans-unit id="tx_t3sixshop_domain_model_order.startshop">
 				<source>Start shopping</source>
 			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.confirm_btn">
+				<source>Confirm</source>
+			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.checkout_btn">
 				<source>Confirm</source>
+			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.back">
+				<source>Back</source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.cart">
 				<source>Cart</source>

@@ -40,6 +40,8 @@ plugin.tx_t3sixshop {
 		minOrderAmt = 100
 		# cat=plugin.tx_t3sixshop//a; type=string; label=Registration PID
 		registerPid = 24
+		# cat=plugin.tx_t3sixshop//a; type=string; label=Enable coupon
+		enableCoupon = 1
 		
 		list {
 			# cat=plugin.tx_t3sixshop//a; type=string; label=Records per page

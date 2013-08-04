@@ -138,6 +138,9 @@
 			<trans-unit id="tx_t3sixshop_domain_model_order.amount">
 				<source>Net Amount</source>
 			</trans-unit>
+			<trans-unit id="tx_t3sixshop_domain_model_order.shipping">
+				<source>Shipping Amount</source>
+			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_order.totalamount">
 				<source>Grand Total</source>
 			</trans-unit>

@@ -381,9 +381,9 @@ CREATE TABLE tx_t3sixshop_domain_model_coupon (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	code varchar(255) DEFAULT '' NOT NULL,
-	usage char(1) DEFAULT 'O' NOT NULL,
-	discount float(7,2) DEFAULT 'O.00' NOT NULL,
-	dtype char(1) DEFAULT 'F' NOT NULL,
+	cuse char(1) DEFAULT '' NOT NULL,
+	discount float(7,2) DEFAULT '0.00' NOT NULL,
+	dtype char(1) DEFAULT '' NOT NULL,
 	orders int(11) DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
@@ -409,6 +409,7 @@ CREATE TABLE tx_t3sixshop_domain_model_coupon (
 	l10n_diffsource mediumblob,
 
 	PRIMARY KEY (uid),
+	UNIQUE KEY coupcode (code),
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY language (l10n_parent,sys_language_uid)
@@ -424,8 +425,8 @@ CREATE TABLE tx_t3sixshop_domain_model_deliveryoption (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	name varchar(255) DEFAULT '' NOT NULL,
-	price float(7,2) DEFAULT 'O.00' NOT NULL,
-	freeprice float(7,2) DEFAULT 'O.00' NOT NULL,
+	price float(7,2) DEFAULT '0.00' NOT NULL,
+	freeprice float(7,2) DEFAULT '0.00' NOT NULL,
 	schedule varchar(255) DEFAULT '' NOT NULL,
 	orders int(11) DEFAULT '0' NOT NULL,
 

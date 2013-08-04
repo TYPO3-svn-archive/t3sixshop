@@ -206,14 +206,14 @@
 			<trans-unit id="tx_t3sixshop_domain_model_coupon.discount">
 				<source>Discount</source>
 			</trans-unit>
-			<trans-unit id="tx_t3sixshop_domain_model_coupon.usage">
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.cuse">
 				<source>Usage type</source>
 			</trans-unit>
-			<trans-unit id="tx_t3sixshop_domain_model_coupon.usage.O" xml:space="preserve">
-				<source> One Time </source>
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.cuse.O" xml:space="preserve">
+				<source>One Time </source>
 			</trans-unit>
-			<trans-unit id="tx_t3sixshop_domain_model_coupon.usage.M" xml:space="preserve">
-				<source> Multiple </source>
+			<trans-unit id="tx_t3sixshop_domain_model_coupon.cuse.M" xml:space="preserve">
+				<source>Multiple </source>
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_coupon.dtype">
 				<source>Discount type</source>
@@ -292,6 +292,10 @@
 			</trans-unit>
 			<trans-unit id="tx_t3sixshop_domain_model_cart.cartitems">
 				<source>Items</source>
+			</trans-unit>
+			
+			<trans-unit id="tx_t3sixshop_domain_model_cartitem">
+				<source>Cart item</source>
 			</trans-unit>
 		</body>
 	</file>

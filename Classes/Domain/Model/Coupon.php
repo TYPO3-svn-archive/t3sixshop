@@ -53,7 +53,7 @@ class Coupon extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * 
 	 * @var \string
 	 */
-	protected $usage;
+	protected $cuse;
 	
 	/**
 	 * 
@@ -191,20 +191,20 @@ class Coupon extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the usage
 	 *
-	 * @return \string $usage
+	 * @return \string $cuse
 	 */
-	public function getUsage() {
-		return $this->usage;
+	public function getCuse() {
+		return $this->cuse;
 	}
 	
 	/**
-	 * Sets the usage
+	 * Sets the cuse
 	 *
-	 * @param \string $usage
+	 * @param \string $cuse
 	 * @return void
 	 */
-	public function setUsage($usage) {
-		$this->usage = $usage;
+	public function setCuse($cuse) {
+		$this->cuse = $cuse;
 	}
 }
 ?>

@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_t3sixshop_domain_model_coupon'] = array(
 	'ctrl' => $TCA['tx_t3sixshop_domain_model_coupon']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, code, usage, discount, dtype, orders',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, code, cuse, discount, dtype, orders',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, code, discount, dtype, usage, orders,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, code, discount, dtype, cuse, orders,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -102,14 +102,14 @@ $TCA['tx_t3sixshop_domain_model_coupon'] = array(
 				'eval' => 'trim,required',
 			),
 		),
-		'usage' => array(
+		'cuse' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.usage',
+			'label' => 'LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.cuse',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.usage.O', 'O'),
-					array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.usage.M', 'M'),
+					array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.cuse.O', 'O'),
+					array('LLL:EXT:t3sixshop/Resources/Private/Language/locallang_db.xlf:tx_t3sixshop_domain_model_coupon.cuse.M', 'M'),
 				),
 				'size' => 1,
 				'maxitems' => 1,

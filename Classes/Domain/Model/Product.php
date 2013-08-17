@@ -352,10 +352,13 @@ class Product extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getImage() {
 		
-		if ($this->image instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
-			$this->image->_loadRealInstance();
+		if(!is_null($this->image)) {
+				
+			if ($this->image instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+				$this->image->_loadRealInstance();
+			}
+			return $this->image->getOriginalResource();
 		}
-		return $this->image->getOriginalResource();
 	}
 	
 	/**

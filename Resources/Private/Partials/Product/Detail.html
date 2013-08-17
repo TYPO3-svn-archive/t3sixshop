@@ -1,23 +1,33 @@
-<div id="prd-img-main">
-	<f:for each="{product.images}" as="hdimage">
-		<div class="bigimage" id="img-{hdimage.uid}">
-			<f:if condition="{0:hdimage.storage} == {0:0}">
-				<f:then>
-					<a href="{hdimage.identifier}" class="jqzoom" title="{product.name}">
-						<f:image src="{hdimage.uid}"  width="{settings.detail.width}c" height="{settings.detail.height}c" treatIdAsReference="1"  alt="{product.name}" />
-					</a>
-				</f:then>
-				<f:else>
-					<a href="fileadmin{hdimage.identifier}" class="jqzoom" title="{product.name}">
-						<f:image src="{hdimage.uid}"  width="{settings.detail.width}c" height="{settings.detail.height}c" treatIdAsReference="1"  alt="{product.name}" />
-					</a>
-				</f:else>
-			</f:if>
+<f:if condition="{product.images}">
+	<f:then>
+		<div id="prd-img-main">
+			<f:for each="{product.images}" as="hdimage">
+				<div class="bigimage" id="img-{hdimage.uid}">
+					<f:if condition="{0:hdimage.storage} == {0:0}">
+						<f:then>
+							<a href="{hdimage.identifier}" class="jqzoom" title="{product.name}">
+								<f:image src="{hdimage.uid}"  width="{settings.detail.width}c" height="{settings.detail.height}c" treatIdAsReference="1"  alt="{product.name}" />
+							</a>
+						</f:then>
+						<f:else>
+							<a href="fileadmin{hdimage.identifier}" class="jqzoom" title="{product.name}">
+								<f:image src="{hdimage.uid}"  width="{settings.detail.width}c" height="{settings.detail.height}c" treatIdAsReference="1"  alt="{product.name}" />
+							</a>
+						</f:else>
+					</f:if>
+				</div>
+			</f:for>
 		</div>
-	</f:for>
-</div>
-<div id="prd-thumbs">
-	<f:for each="{product.images}" as="img">
-		<f:image src="{img.uid}" alt="{product.name}" width="{settings.detail.thumbwidth}c" height="{settings.detail.thumbheight}c" treatIdAsReference="1" class="pthumb" dir="img-{img.uid}" />
-	</f:for>
-</div>
+		<div id="prd-thumbs">
+			<f:for each="{product.images}" as="img">
+				<f:image src="{img.uid}" alt="{product.name}" width="{settings.detail.thumbwidth}c" height="{settings.detail.thumbheight}c" treatIdAsReference="1" class="pthumb" dir="img-{img.uid}" />
+			</f:for>
+		</div>
+	</f:then>
+	<f:else>
+		<div id="prd-img-main">
+			<f:image src="{f:uri.resource(path:'Images/noimage.png')}" alt="{product.name}" width="{settings.detail.width}c" height="{settings.detail.height}c" />
+		</div>
+		
+	</f:else>
+</f:if>

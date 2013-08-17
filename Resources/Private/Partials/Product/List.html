@@ -1,5 +1,10 @@
 <div class="wrapper">
-	<div class="prd-img"><f:link.action action="show" pluginName="Show" pageUid="{settings.singlePid}" arguments="{product : product}"><f:image src="{product.image.uid}" alt="{product.name}" width="{settings.list.width}c" height="{settings.list.height}c" treatIdAsReference="1" /></f:link.action></div>
+	<div class="prd-img"><f:link.action action="show" pluginName="Show" pageUid="{settings.singlePid}" arguments="{product : product}">
+	<f:if condition="{product.image}">
+		<f:then><f:image src="{product.image.uid}" alt="{product.name}" width="{settings.list.width}c" height="{settings.list.height}c" treatIdAsReference="1" /></f:then>
+		<f:else><f:image src="{f:uri.resource(path:'Images/noimage.png')}" alt="{product.name}" width="{settings.list.width}c" height="{settings.list.height}c" /></f:else>
+	</f:if>
+	</f:link.action></div>
 	<dl class="def-list-1">
 		<dt><f:link.action action="show" pluginName="Show" pageUid="{settings.singlePid}" arguments="{product : product}" title="{product.name}">{product.name}</f:link.action></dt>
 		<dd>
